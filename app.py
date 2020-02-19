@@ -10,8 +10,16 @@ app = Flask(__name__)
 # set the default route
 @app.route('/')
 def index():
-    return 'hello heroku pipeline test-github-mdh'
+    group = Institute.select()
+    print(group)
+    for i in group:
+        print(i.name)
+    hello = str(group)
+    return hello
 
+
+
+    
 @app.teardown_request
 def _db_close(exc):
     if not db.is_closed():
