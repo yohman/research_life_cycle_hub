@@ -17,5 +17,7 @@ Change directory into the project folder:
 
 ### Run the project
 `python app.py`
+
 or
+
 `flask run`
