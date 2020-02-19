@@ -2,7 +2,7 @@
 
 ## Setup
 
-### Install python
+### Install Python
 make sure you have Python installed:
 https://www.python.org/downloads/
 
@@ -19,7 +19,9 @@ Change directory into the project folder:
 ### Request Access to the database
 We'll provide you with the credentials for running the project if you need to connect to our database in a `config.py` file.
 
-### Run the project
+## Using the Project
+
+### Run the application
 `python app.py`
 
 ### Access the API
