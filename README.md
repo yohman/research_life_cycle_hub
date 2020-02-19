@@ -3,7 +3,8 @@
 ## Setup
 
 ### Install python
-make sure you have Python installed
+make sure you have Python installed:
+https://www.python.org/downloads/
 
 ### Clone the repo
 `git clone https://github.com/IDREsandbox/research_life_cycle_hub.git`
@@ -17,7 +18,3 @@ Change directory into the project folder:
 
 ### Run the project
 `python app.py`
-
-or
-
-`flask run`
