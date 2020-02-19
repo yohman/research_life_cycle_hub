@@ -24,7 +24,7 @@ We'll provide you with the credentials for running the project if you need to co
 ### Run the application
 `python app.py`
 
-### Access the API
+### Access the API*
 *Note: The API only works if you have the config.py file*
 #### get phases:
 `localhost:5000/get_phases`
