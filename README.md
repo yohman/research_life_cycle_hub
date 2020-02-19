@@ -1,4 +1,4 @@
-# Research Life Cycle Guide
+# UCLA Research Life Cycle
 
 ## Setup
 
