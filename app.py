@@ -15,7 +15,7 @@ def index():
     for i in group:
         print(i.name)
     hello = str(group)
-    return hello
+    return render_template('map.html')
 
 @app.route('/get_phases')
 def phase_api():
