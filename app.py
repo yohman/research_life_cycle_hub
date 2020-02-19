@@ -19,7 +19,7 @@ def index():
 
 @app.route('/get_phases')
 def phase_api():
-    user_obj = Phases.select()
+    user_obj = Phase.select()
     # for data in user_obj:
     #     user_dict = model_to_dict(data, recurse=False)
     data = [model_to_dict(r) for r in user_obj]
