@@ -8,13 +8,13 @@ from config import Config
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 
-# used for passwords
-# from flask_bcrypt import generate_password_hash, check_password_hash
 
 db = PostgresqlDatabase(database=Config.DATABASE, user=Config.USERNAME, password=Config.SECRET_KEY,
 host=Config.HOST, port=Config.PORT)
 
 db.connect()
+tables = db.get_tables()
+
 
 class Phase(Model):
     id = IntegerField()
@@ -112,3 +112,5 @@ class TagTask(Model):
     class Meta:
         database = db
         db_table = 'tag_to_task'
+
+
