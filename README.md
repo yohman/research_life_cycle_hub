@@ -26,7 +26,13 @@ We'll provide you with the credentials for running the project if you need to co
 
 ### Access the API*
 *Note: The API only works if you have the config.py file*
+#### get all data:
+`localhost:5000/api/all`
 #### get phases:
-`localhost:5000/get_phases`
+`localhost:5000/api/phase`
 #### get tasks:
-`localhost:5000/get_tasks`
+`localhost:5000/api/task`
+#### get insitutes:
+`localhost:5000/api/institute`
+#### get people:
+`localhost:5000/api/people`
