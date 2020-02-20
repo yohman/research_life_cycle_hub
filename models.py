@@ -13,7 +13,7 @@ db = PostgresqlDatabase(database=Config.DATABASE, user=Config.USERNAME, password
 host=Config.HOST, port=Config.PORT)
 
 db.connect()
-tables = db.get_tables()
+# tables = db.get_tables()
 
 
 class Phase(Model):

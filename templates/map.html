@@ -29,6 +29,17 @@
 	</div>
 </div>
 <script type="text/javascript" src="../static/js/researchcycle.js"></script>
+<li>
+{% for d in phase %}
+<ul>
+	<div style="color:{{d.color}}">
+			{{d.name}}
+		</div>
+</ul>
+	
+	{% endfor %}
+</li>
+
 
 </body>
 </html>

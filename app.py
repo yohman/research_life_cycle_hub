@@ -10,16 +10,14 @@ try:
 except:
     print('Warning: Missing config.py file, cannot access database.')
 
-import peewee
-models = peewee.Model.__subclasses__()
-
+# function for querying the data
 def model_select(model):
     model_obj = model.select()
     json_obj = [model_to_dict(r) for r in model_obj]
     return json_obj
 
+# function to get data in a list
 def add_data(*args):
-    
     for r in args:
         print(args.index(r))
         if args.index(r) == 0:
@@ -36,22 +34,15 @@ app = Flask(__name__)
 def index():
     return render_template('map.html')
 
-
-@app.route('/get_all')
-def all_api():
-    the_data = add_data(Phase,Task,Institute,Person)
-    print(the_data)
-    return jsonify(the_data)
-
-
 def find_table(table):
     return table
-
 
 # route for the API for individual data
 @app.route('/api/<data>')
 def the_api(data):
-    if data == "phase":
+    if data == "all":
+        the_data = add_data(Phase,Task,Institute,Person)
+    elif data == "phase":
         the_data = add_data(Phase)
     elif data == "task":
         the_data = add_data(Task)
@@ -59,7 +50,7 @@ def the_api(data):
         the_data = add_data(Institute)
     elif data == "person":
         the_data = add_data(Person)
-
+        
     # tables = db.get_tables()
     # # print(tables)
     # if data in tables:
@@ -71,13 +62,13 @@ def the_api(data):
     # print(Phase._meta.table)
     return jsonify(the_data)
 
-@app.route('/get_tasks')
-def task_api():
-    user_obj = Task.select()
+# @app.route('/get_tasks')
+# def task_api():
+#     user_obj = Task.select()
 
-    data = [model_to_dict(r) for r in user_obj]
-    print(data)
-    return jsonify(data)
+#     data = [model_to_dict(r) for r in user_obj]
+#     print(data)
+#     return jsonify(data)
 
 
 @app.teardown_request
