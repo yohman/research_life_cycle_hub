@@ -50,6 +50,8 @@ def the_api(data):
         the_data = add_data(Task)
     elif data == "institute":
         the_data = add_data(Institute)
+    elif data == "institute2task":
+        the_data = add_data(InstituteTask)        
     elif data == "person":
         the_data = add_data(Person)
         
