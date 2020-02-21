@@ -112,6 +112,56 @@ rlc.data = {
 			phase: 'Develop',
 			order: 9
 		},
+		{
+			name: 'Copyright & Permissions',
+			phase: 'Launch',
+			order: 1
+		},
+		{
+			name: 'Web development & hosting',
+			phase: 'Launch',
+			order: 2
+		},
+		{
+			name: 'Open access',
+			phase: 'Launch',
+			order: 3
+		},
+		{
+			name: 'Publishing',
+			phase: 'Launch',
+			order: 4
+		},
+		{
+			name: 'Project maintenance',
+			phase: 'Preserve',
+			order: 1
+		},
+		{
+			name: 'Digital repository',
+			phase: 'Preserve',
+			order: 2
+		},
+		{
+			name: 'Data archive and preservation',
+			phase: 'Preserve',
+			order: 3
+		},
+		{
+			name: 'Data curation',
+			phase: 'Preserve',
+			order: 4
+		},
+		{
+			name: 'Licensing & IP',
+			phase: 'Preserve',
+			order: 5
+		},
+		{
+			name: 'Grant conclusion',
+			phase: 'Preserve',
+			order: 6
+		},
 	]
 }
 
@@ -182,8 +232,6 @@ nodeidstart++
 edges.push(
 	{from: 0, to: 1, length: 400, arrows:'to',dashes:[2,10], smooth: { enabled: true, "type": "curvedCW", roundness: 0.75}},)
 
-
-
 // loop through phases
 $.each(rlc.data.phases, function(i,phase){
 	// create title node
@@ -245,17 +293,6 @@ $.each(rlc.data.phases, function(i,phase){
 		)
 		nodeidstart++
 	})
-
-
-	// draw edge between phases
-	// if(i > 0)
-	// {
-		// edges.push(
-		// 	{from: previous_phase_id, to: nodeidstart, arrows:'to',dashes:[2,10], smooth: { enabled: true, "type": "curvedCW", roundness: 0.5}},
-		// )
-	// }
-
-
 })
 
 function getNextXY(task)
@@ -309,27 +346,9 @@ var data = {
 	edges: new vis.DataSet(edges)
 };
 var options = {
-	// layout: {
-	//   hierarchical: {
-	//   	direction: "LR",
-	//   	levelSeparation: 400,
-	//   	nodeSpacing: 200
-	//   }
-	// },
-	// physics: {
-	// 	enabled: true
-	// },
 	physics: {
 		stabilization: {enabled: false, fit: true},
 		enabled: true,
-		// barnesHut: {
-		// 	gravitationalConstant: -10000,
-		// 	centralGravity: 0.1,
-		// 	springLength: 95,
-		// 	springConstant: 0.04,
-		// 	damping: 0.09,
-		// 	avoidOverlap: 0
-		// },
 		forceAtlas2Based: {
 			gravitationalConstant: -2000,
 			centralGravity: 0.01,
@@ -338,14 +357,6 @@ var options = {
 			damping: 0.4,
 			avoidOverlap: 1
 		},
-		// hierarchicalRepulsion: {
-		// 	centralGravity: 0.0,
-		// 	springLength: 10,
-		// 	springConstant: 0.01,
-		// 	nodeDistance: 10,
-		// 	damping: 0.09,
-		// 	avoidOverlap: 0
-		// },
 		solver: 'barnesHut',
 	},
 	nodes: {
@@ -421,42 +432,3 @@ function addInstitutes2Task(taskid)
 
 }
 
-function addIDRE()
-{
-	// IDRE
-	IDREnode = {id: 100, level: 1, label: "IDRE", shape: 'box', color: '#ccc', borderWidth: 0}
-	data.nodes.add(IDREnode)
-
-	IDREedges = [
-		{from: 100, to: 4, width: 2, length:100, id:'idre-1'},
-		{from: 100, to: 9, width: 2, length:100, id:'idre-2'},
-		{from: 100, to: 10, width: 2, length:100, id:'idre-3'},
-		{from: 100, to: 11, width: 2, length:100, id:'idre-4'},
-		{from: 100, to: 18, width: 2, length:100, id:'idre-5'}
-	]
-
-	for (var i = IDREedges.length - 1; i >= 0; i--) {
-		data.edges.add(IDREedges[i])
-	}
-
-}
-
-function addORA()
-{
-	// IDRE
-	ORAnode = {id: 101, label: "ORA", shape: 'box', color: '#ccc', borderWidth: 0}
-	nodes.add(ORAnode)
-
-	ORAedges = [
-		// ORA
-		{from: 101, to: 2, width: 2, length:100, id:'ora-1'},
-		{from: 101, to: 5, width: 2, length:100, id:'ora-2'},
-		{from: 101, to: 7, width: 2, length:100, id:'ora-3'},
-		{from: 101, to: 21, width: 2, length:100, id:'ora-4'},
-	]
-
-	for (var i = IDREedges.length - 1; i >= 0; i--) {
-		edges.add(IDREedges[i])
-	}
-
-}

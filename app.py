@@ -5,10 +5,12 @@ from flask import Flask, render_template,flash, redirect, request, url_for,jsoni
 from playhouse.shortcuts import model_to_dict, dict_to_model
 from playhouse.dataset import DataSet
 
-try:
-    from models import *
-except:
-    print('Warning: Missing config.py file, cannot access database.')
+# try:
+#     from models import *
+# except:
+#     print('Warning: Missing config.py file, cannot access database.')
+
+from models import *
 
 # function for querying the data
 def model_select(model):
