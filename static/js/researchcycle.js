@@ -161,26 +161,43 @@ var groupcolors = {
 	},
 }
 
-var ydistance_between = 150;
+var ydistance_between = 200;
 var xdistance_between = 400;
+var current_x = 0
+var current_y = 0
+var direction = 'down'
+var curved_edge = false
+var curved_edge_type = 'curvedCW'
+var nodes_per_column = 5
 
 var nodeidstart = 0;
 
 var nodes = [];
+var edges = [];
 
 nodes.push(// Idea logo
-		{id: nodeidstart, level: 0, group: 100, image: 'images/idea.png', shape: 'image', size: 100,  x: -450, y: 100, font:{color:'#ffffff'}},)
-	nodeidstart++
+		{id: nodeidstart, level: 0, group: 100, image: '../static/images/idea.png', shape: 'image', size: 100,  x: -450, y: 100, font:{color:'#ffffff'}},)
+nodeidstart++
+
+edges.push(
+	{from: 0, to: 1, length: 400, arrows:'to',dashes:[2,10], smooth: { enabled: true, "type": "curvedCW", roundness: 0.75}},)
+
+
 
 // loop through phases
 $.each(rlc.data.phases, function(i,phase){
 	// create title node
-	var thistitle = 
+
+	coords = getNextXY()
+
+	console.log(phase.name)
+	console.log(coords)
+	var thisphase = 
 	{
 		id: nodeidstart, 
 		level: i+1,
-		x: i*xdistance_between,
-		y: 0,
+		x: coords[0],
+		y: coords[1],
 		label: phase.name,
 		color: {
 			border: phase.color,
@@ -191,12 +208,20 @@ $.each(rlc.data.phases, function(i,phase){
 		title:phase.name
 	}
 
+		edges.push(
+			{from: nodeidstart-1, to: nodeidstart, arrows:'to', smooth: { enabled: curved_edge, "type": curved_edge_type, roundness: 0.5}},
+		)
+
+	previous_phase_id = nodeidstart
+
 	//add to nodes
-	nodes.push(thistitle)
+	nodes.push(thisphase)
+
 	nodeidstart++
 
 	// get tasks for this phase
 	tasksbythisphase = getTasksByPhase(phase.name)
+
 
 	// loop and add node
 	$.each(tasksbythisphase, function(j,task){
@@ -204,197 +229,84 @@ $.each(rlc.data.phases, function(i,phase){
 		task.level = i+1
 		task.label = task.name
 		task.title = task.name
-		task.x = i*xdistance_between
-		task.y = (j+1)*ydistance_between
+
+		coords = getNextXY()
+		task.x = coords[0]
+		task.y = coords[1]
+
 		task.color = {
 			border: phase.color,
 			background: 'white'
 		}
 
 		nodes.push(task)
+		edges.push(
+			{from: nodeidstart-1, to: nodeidstart, arrows:'to', smooth: { enabled: curved_edge, "type": curved_edge_type, roundness: 0.5}},
+		)
 		nodeidstart++
 	})
 
+
+	// draw edge between phases
+	// if(i > 0)
+	// {
+		// edges.push(
+		// 	{from: previous_phase_id, to: nodeidstart, arrows:'to',dashes:[2,10], smooth: { enabled: true, "type": "curvedCW", roundness: 0.5}},
+		// )
+	// }
+
+
 })
 
-var data = {
-
-	edges: [
-		// dashed edges between phases
-		{from: 0, to: 1, length: 400, arrows:'to',dashes:[2,10], smooth: { enabled: true, "type": "curvedCW", roundness: 0.75}},
-
-		{from: 100, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-		{from: 102, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-		{from: 103, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-		{from: 104, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-
-		{from: 101, to: 3, width: 2, length: 50, smooth: { enabled: false}},
-
-		// solid edges between tasks
-		{from: 1, to: 2, arrows:'to'},
-		{from: 2, to: 3, arrows:'to'},
-		{from: 3, to: 4, arrows:'to'},
-		{from: 4, to: 5, arrows:'to'},
-		{from: 5, to: 6, arrows:'to'},
-		{from: 6, to: 7, arrows:'to'},
-		{from: 7, to: 8, arrows:'to' },
-		{from: 8, to: 9, arrows:'to', smooth: { enabled: true, "type": "curvedCCW", roundness: 0.75}},
-		{from: 9, to: 10, arrows:'to'},
-		{from: 10, to: 11, arrows:'to'},
-
-		{from: 11, to: 12, arrows:'to'},
-		{from: 12, to: 13, arrows:'to'},
-		{from: 13, to: 14, arrows:'to'},
-		{from: 14, to: 15, arrows:'to'},
-		{from: 15, to: 16, arrows:'to'},
-		{from: 16, to: 17, arrows:'to', smooth: { enabled: true, "type": "curvedCW", roundness: 0.75}},
-		{from: 17, to: 18, arrows:'to'},
-		{from: 18, to: 19, arrows:'to'},
-		{from: 19, to: 20, arrows:'to'},
-		{from: 20, to: 21, arrows:'to'},
-
-		{from: 21, to: 22, arrows:'to'},
-		{from: 22, to: 23, arrows:'to'},
-		{from: 23, to: 24, arrows:'to'},
-		{from: 24, to: 25, arrows:'to', smooth: { enabled: true, "type": "curvedCCW", roundness: 0.75}},
-		{from: 25, to: 26, arrows:'to'},
-		{from: 26, to: 27, arrows:'to'},
-		{from: 27, to: 28, arrows:'to'},
-		{from: 28, to: 29, arrows:'to'},
-		{from: 29, to: 30, arrows:'to'},
-		{from: 30, to: 31, arrows:'to'},
-		{from: 31, to: 32, arrows:'to'},
-
-	]
+function getNextXY(task)
+{
+	// go down
+	if ((direction == 'down')&&(current_y < nodes_per_column*ydistance_between))
+	{
+		x = current_x
+		y = current_y
+		current_y = current_y + ydistance_between
+		curved_edge = false
+	}
+	// go across and up
+	else if ((direction == 'down')&&(current_y == nodes_per_column*ydistance_between))
+	{
+		current_x = current_x + xdistance_between
+		current_y = current_y - ydistance_between
+		x = current_x
+		y = current_y
+		direction = 'up'
+		curved_edge = true
+		curved_edge_type = 'curvedCCW'
+	}
+	// go up
+	else if(direction == 'up' && current_y > 0)
+	{
+		current_y = current_y - ydistance_between
+		x = current_x
+		y = current_y
+		curved_edge = false
+	}
+	// go across and down
+	else if (direction == 'up' && current_y == 0)
+	{
+		current_x = current_x + xdistance_between
+		x = current_x
+		y = current_y
+		current_y = current_y + ydistance_between
+		direction = 'down'			
+		curved_edge = true
+		curved_edge_type = 'curvedCW'
+	}
+	return [x,y]
 }
 
-var data = {
-	nodes: [
-		// Idea logo
-		{id: 0, level: 0, group: 100, image: 'images/idea.png', shape: 'image', size: 100,  x: -450, y: 100, font:{color:'#ffffff'}},
-		
-		// Plan
-		{id: 1, level: 1, x: 0, y:0, label: "Plan", color: groupcolors.planning, font:{size: 25}, shape: 'box',title:"PLAN"},
-		{id: 2, level: 1, x: 0, y:ydistance_between, label: "Project concept & scoping", title: "Project concept and scoping", color: groupcolors.planning_task},
-		{id: 3, level: 1, x: 0, y:ydistance_between*2, label: "Funding", title: "Funding", color: groupcolors.planning_task},
-		{id: 4, level: 1, x: 0, y:ydistance_between*3, label: "Literature review & landscape scan", title: "Literature review & landscape scan", color: groupcolors.planning_task},
-		{id: 5, level: 1, x: 0, y:ydistance_between*4, label: "Workshops & trainings", title: "Workshops & trainings", color: groupcolors.planning_task},
-		{id: 6, level: 1, x: 0, y:ydistance_between*5, label: "Tools & best practices", title: "Tools & best practices", color: groupcolors.planning_task},
-		{id: 7, level: 1, x: 0, y:ydistance_between*6, label: "Data models & structures", title: "Data models & structures", color: groupcolors.planning_task},
-		{id: 8, level: 1, x: 0, y:ydistance_between*7, label: "Prototyping", title: "Prototyping", color: groupcolors.planning_task},
-		{id: 9, level: 1, x: 400, y:ydistance_between*7, label: "Ethics, compliance & security", title: "Ethics, compliance & security", color: groupcolors.planning_task},
-		{id: 10, level: 1, x: 400, y:ydistance_between*6, label: "Project management guidance", title: "Project management guidance", color: groupcolors.planning_task},
-
-		// Develop
-		{id: 11, level: 2, x: 400, y:ydistance_between*5, label: "Develop", color: groupcolors.development, font:{size: 25}, shape: 'box',title:"DEVELOP"},
-		{id: 12, level: 2, x: 400, y:ydistance_between*4, label: "Grant proposal development", color:groupcolors.development_task},
-		{id: 13, level: 2, x: 400, y:ydistance_between*3, label: "Data management plan", color:groupcolors.development_task},
-		{id: 14, level: 2, x: 400, y:ydistance_between*2, label: "Data collection and manipulation", color:groupcolors.development_task},
-		{id: 15, level: 2, x: 400, y:ydistance_between*1, label: "Advanced computation", color:groupcolors.development_task},
-		{id: 16, level: 2, x: 400, y:0, label: "Statistical analysis", color:groupcolors.development_task},
-		{id: 17, level: 2, x: 800, y:0, label: "Data visualization", color:groupcolors.development_task},
-		{id: 18, level: 2, x: 800, y:ydistance_between*1, label: "GIS & mapping", color:groupcolors.development_task},
-		{id: 19, level: 2, x: 800, y:ydistance_between*2, label: "3D, VR & AR technologies", color:groupcolors.development_task},
-		{id: 20, level: 2, x: 800, y:ydistance_between*3, label: "Text analysis", color:groupcolors.development_task},
-
-		// Launch
-		{id: 21, level: 3, x: 800, y:ydistance_between*4, label: "Launch", color: groupcolors.launch, font:{size: 25}, shape: 'box',title:"LAUNCH"},
-		{id: 22, level: 3, x: 800, y:ydistance_between*5, label: "Copyright & permissions", color:groupcolors.launch_task},
-		{id: 23, level: 3, x: 800, y:ydistance_between*6, label: "Web development & hosting", color:groupcolors.launch_task},
-		{id: 24, level: 3, x: 800, y:ydistance_between*7, label: "Open access", color:groupcolors.launch_task},
-		{id: 25, level: 3, x: 1200, y:ydistance_between*7, label: "Publishing", color:groupcolors.launch_task},
-
-		// Preserve
-		{id: 26, level: 4, x: 1200, y:ydistance_between*6, label: "Preserve", color: groupcolors.preservation, font:{size: 25}, shape: 'box',title:"PRESERVE"},
-		{id: 27, level: 4, x: 1200, y:ydistance_between*5, label: "Project maintenance", color:groupcolors.preservation_task},
-		{id: 28, level: 4, x: 1200, y:ydistance_between*4, label: "Digital repository", color:groupcolors.preservation_task},
-		{id: 29, level: 4, x: 1200, y:ydistance_between*3, label: "Data archive & preservation", color:groupcolors.preservation_task},
-		{id: 30, level: 4, x: 1200, y:ydistance_between*2, label: "Data curation", color:groupcolors.preservation_task},
-		{id: 31, level: 4, x: 1200, y:ydistance_between*1, label: "Licensing & IP", color:groupcolors.preservation_task},
-		{id: 32, level: 4, x: 1200, y:0, label: "Grant conclusion", color:groupcolors.preservation_task},
-
-		// Institutes
-		{id: 100, fixed: false, label: "IDRE", borderWidth: 2,color:{border:'white',background: 'darkblue'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}},
-		{id: 101, fixed: false, label: "Library", borderWidth: 2,color:{border:'white',background: 'lightgreen'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}},
-		{id: 102, fixed: false, label: "Data Science Center", borderWidth: 2,color:{border:'white',background: 'brown'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}},
-		{id: 103, fixed: false, label: "Local", borderWidth: 2,color:{border:'white',background: 'yellow'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}},
-		{id: 104, fixed: false, label: "Peers", borderWidth: 2,color:{border:'white',background: 'purple'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}},
-
-
-
-
-	],
-
-	edges: [
-		// dashed edges between phases
-		{from: 0, to: 1, length: 400, arrows:'to',dashes:[2,10], smooth: { enabled: true, "type": "curvedCW", roundness: 0.75}},
-		// {from: 1, to: 11, length: 400, arrows:'to',dashes:[2,10]},
-		// {from: 11, to: 21, length: 400, arrows:'to',dashes:[2,10]},
-		// {from: 21, to: 26, length: 400, arrows:'to',dashes:[2,10]},
-		// {from: 26, to: 1, length: 400, arrows:'to',dashes:[2,10]},
-
-		{from: 100, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-		{from: 102, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-		{from: 103, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-		{from: 104, to: 2, width: 2, length: 50, smooth: { enabled: false}},
-
-		{from: 101, to: 3, width: 2, length: 50, smooth: { enabled: false}},
-
-		// {from: 101, to: 4, width: 2, length: 50, smooth: { enabled: false}},
-		// {from: 103, to: 4, width: 2, length: 50, smooth: { enabled: false}},
-		// {from: 104, to: 4, width: 2, length: 50, smooth: { enabled: false}},
-
-
-		// solid edges between tasks
-		{from: 1, to: 2, arrows:'to'},
-		{from: 2, to: 3, arrows:'to'},
-		{from: 3, to: 4, arrows:'to'},
-		{from: 4, to: 5, arrows:'to'},
-		{from: 5, to: 6, arrows:'to'},
-		{from: 6, to: 7, arrows:'to'},
-		{from: 7, to: 8, arrows:'to' },
-		{from: 8, to: 9, arrows:'to', smooth: { enabled: true, "type": "curvedCCW", roundness: 0.75}},
-		{from: 9, to: 10, arrows:'to'},
-		{from: 10, to: 11, arrows:'to'},
-		// {from: 10, to: 11, arrows:'to', color: {color:"rgba(255,255,255,0.1)"}},
-
-		{from: 11, to: 12, arrows:'to'},
-		{from: 12, to: 13, arrows:'to'},
-		{from: 13, to: 14, arrows:'to'},
-		{from: 14, to: 15, arrows:'to'},
-		{from: 15, to: 16, arrows:'to'},
-		{from: 16, to: 17, arrows:'to', smooth: { enabled: true, "type": "curvedCW", roundness: 0.75}},
-		{from: 17, to: 18, arrows:'to'},
-		{from: 18, to: 19, arrows:'to'},
-		{from: 19, to: 20, arrows:'to'},
-		{from: 20, to: 21, arrows:'to'},
-		// {from: 20, to: 21, arrows:'to', color: {color:"rgba(255,255,255,0.1)"}},
-
-		{from: 21, to: 22, arrows:'to'},
-		{from: 22, to: 23, arrows:'to'},
-		{from: 23, to: 24, arrows:'to'},
-		{from: 24, to: 25, arrows:'to', smooth: { enabled: true, "type": "curvedCCW", roundness: 0.75}},
-		{from: 25, to: 26, arrows:'to'},
-		// {from: 25, to: 26, arrows:'to', color: {color:"rgba(255,255,255,0.1)"}},
-
-		{from: 26, to: 27, arrows:'to'},
-		{from: 27, to: 28, arrows:'to'},
-		{from: 28, to: 29, arrows:'to'},
-		{from: 29, to: 30, arrows:'to'},
-		{from: 30, to: 31, arrows:'to'},
-		{from: 31, to: 32, arrows:'to'},
-		// {from: 32, to: 1, arrows:'to'},
-		// {from: 32, to: 1, arrows:'to', color: {color:"rgba(255,255,255,0.1)"}},
-
-
-	]
-}
 
 // create a network
 var container = document.getElementById('mynetwork');
 var data = {
-	nodes: new vis.DataSet(data.nodes),
-	edges: new vis.DataSet(data.edges)
+	nodes: new vis.DataSet(nodes),
+	edges: new vis.DataSet(edges)
 };
 var options = {
 	// layout: {
@@ -472,12 +384,42 @@ network.on("hoverNode", function (params) {
 	$("#infopanel").html('<h2>'+data.nodes.get(params.node).label+'</h2>')
 });
 network.on("click", function (params) {
+	addInstitutes2Task(params.nodes[0])
 	params.event = "[original event]";
 	document.getElementById('infopanel').innerHTML = '<h2>Click event for '+params.nodes[0]+':</h2>' + JSON.stringify(data.nodes.get(params.nodes[0]), null, 4);
 	console.log(params.nodes[0]);
 });
 
+function addInstitutes2Task(taskid)
+{
+		data.nodes.remove(100)
+		data.nodes.remove(101)
+		data.nodes.remove(102)
+		data.nodes.remove(103)
+		data.nodes.remove(104)
 
+		// Institutes
+		data.nodes.add({id: 100, fixed: false, label: "IDRE", borderWidth: 2,color:{border:'white',background: 'darkblue'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
+		data.nodes.add({id: 101, fixed: false, label: "Library", borderWidth: 2,color:{border:'white',background: 'lightgreen'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
+		data.nodes.add({id: 102, fixed: false, label: "Data Science Center", borderWidth: 2,color:{border:'white',background: 'brown'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
+		data.nodes.add({id: 103, fixed: false, label: "Local", borderWidth: 2,color:{border:'white',background: 'yellow'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
+		data.nodes.add({id: 104, fixed: false, label: "Peers", borderWidth: 2,color:{border:'white',background: 'purple'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
+
+
+		data.edges.remove(100)
+		data.edges.remove(101)
+		data.edges.remove(102)
+		data.edges.remove(103)
+		data.edges.remove(104)
+
+		data.edges.add({id: 100, from: 100, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
+		data.edges.add({id: 101, from: 101, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
+		data.edges.add({id: 102, from: 102, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
+		data.edges.add({id: 103, from: 103, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
+		data.edges.add({id: 104, from: 104, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
+
+
+}
 
 function addIDRE()
 {
