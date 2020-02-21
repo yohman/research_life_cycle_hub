@@ -8,3 +8,4 @@ peewee
 wtforms
 wtf-peewee
 gunicorn
+flask_peewee
