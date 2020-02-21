@@ -9,3 +9,4 @@ wtforms
 wtf-peewee
 gunicorn
 flask_peewee
+psycopg2
