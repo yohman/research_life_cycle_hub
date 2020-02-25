@@ -79,6 +79,7 @@ class Tag(Model):
 ## Begin junction tables here ##
 
 class InstituteTask(Model):
+    id = IntegerField()
     institute_id = ForeignKeyField(Institute)
     task_id = ForeignKeyField(Task)
 
