@@ -1,201 +1,111 @@
 // namespace
-var rlc = {}
-
-// data
-// rlc.data = {
-// 	phases: [
-// 		{
-// 			name: 'Plan',
-// 			color: '#f1c232'
-// 		},
-// 		{
-// 			name: 'Develop',
-// 			color: '#cc4125'
-// 		},
-// 		{
-// 			name: 'Launch',
-// 			color: '#3c78d8'
-// 		},
-// 		{
-// 			name: 'Preserve',
-// 			color: '#6aa84f'
-// 		},
-// 	],
-// 	tasks: [
-// 		{
-// 			name: 'Project concept & scoping',
-// 			phase: 'Plan',
-// 			order: 1
-// 		},
-// 		{
-// 			name: 'Funding',
-// 			phase: 'Plan',
-// 			order: 2
-// 		},
-// 		{
-// 			name: 'Literature review & landscape scan',
-// 			phase: 'Plan',
-// 			order: 3
-// 		},
-// 		{
-// 			name: 'Workshops & trainings',
-// 			phase: 'Plan',
-// 			order: 4
-// 		},
-// 		{
-// 			name: 'Tools & best practices',
-// 			phase: 'Plan',
-// 			order: 5
-// 		},
-// 		{
-// 			name: 'Data models & structures',
-// 			phase: 'Plan',
-// 			order: 6
-// 		},
-// 		{
-// 			name: 'Prototyping',
-// 			phase: 'Plan',
-// 			order: 7
-// 		},
-// 		{
-// 			name: 'Ethics, compliance & security',
-// 			phase: 'Plan',
-// 			order: 8
-// 		},
-// 		{
-// 			name: 'Project management guidance',
-// 			phase: 'Plan',
-// 			order: 9
-// 		},
-// 		{
-// 			name: 'Grant proposal development',
-// 			phase: 'Develop',
-// 			order: 1
-// 		},
-// 		{
-// 			name: 'Data management plan',
-// 			phase: 'Develop',
-// 			order: 2
-// 		},
-// 		{
-// 			name: 'Data collection & manipulation',
-// 			phase: 'Develop',
-// 			order: 3
-// 		},
-// 		{
-// 			name: 'Advanced computation',
-// 			phase: 'Develop',
-// 			order: 4
-// 		},
-// 		{
-// 			name: 'Statistical analysis',
-// 			phase: 'Develop',
-// 			order: 5
-// 		},
-// 		{
-// 			name: 'Data visualization',
-// 			phase: 'Develop',
-// 			order: 6
-// 		},
-// 		{
-// 			name: 'GIS & mapping',
-// 			phase: 'Develop',
-// 			order: 7
-// 		},
-// 		{
-// 			name: '3D, VR & AR',
-// 			phase: 'Develop',
-// 			order: 8
-// 		},
-// 		{
-// 			name: 'Text analysis',
-// 			phase: 'Develop',
-// 			order: 9
-// 		},
-// 		{
-// 			name: 'Copyright & Permissions',
-// 			phase: 'Launch',
-// 			order: 1
-// 		},
-// 		{
-// 			name: 'Web development & hosting',
-// 			phase: 'Launch',
-// 			order: 2
-// 		},
-// 		{
-// 			name: 'Open access',
-// 			phase: 'Launch',
-// 			order: 3
-// 		},
-// 		{
-// 			name: 'Publishing',
-// 			phase: 'Launch',
-// 			order: 4
-// 		},
-// 		{
-// 			name: 'Project maintenance',
-// 			phase: 'Preserve',
-// 			order: 1
-// 		},
-// 		{
-// 			name: 'Digital repository',
-// 			phase: 'Preserve',
-// 			order: 2
-// 		},
-// 		{
-// 			name: 'Data archive and preservation',
-// 			phase: 'Preserve',
-// 			order: 3
-// 		},
-// 		{
-// 			name: 'Data curation',
-// 			phase: 'Preserve',
-// 			order: 4
-// 		},
-// 		{
-// 			name: 'Licensing & IP',
-// 			phase: 'Preserve',
-// 			order: 5
-// 		},
-// 		{
-// 			name: 'Grant conclusion',
-// 			phase: 'Preserve',
-// 			order: 6
-// 		},
-// 	]
-// }
-
-rlc.options = {
-	ydistance_between: 150,
-	xdistance_between: 400,
-	current_x: 0,
-	current_y: 0,
-	direction: 'down',
-	curved_edge: false,
-	curved_edge_type: 'curvedCW',
-	nodes_per_column: 6,
-	nodeidstart: 0,
+var rlc = {
+	options: {
+		ydistance_between: 	200,
+		xdistance_between: 	450,
+		current_x: 			0,
+		current_y: 			0,
+		direction: 			'down',
+		curved_edge: 		false,
+		curved_edge_type: 	'curvedCW',
+		nodes_per_column: 	7,
+		nodeidstart: 		0,
+	},
+	nodes: [],
+	edges: [],
+	data: {
+		tasks: [],
+		phases: [],
+		institute2task: []
+	},
+	network: '',
+	node_options: {
+		phase: {
+			font:{
+				size: 50,
+				color: '#ffffff',
+				face: 'Economica'
+			},
+			shape: 'box',
+			margin: 20,
+			widthConstraint: {
+				maximum: 200,
+				minimum: 200
+			},
+			size: 20,
+			borderWidth: 4,
+			fixed: true,
+		},
+		task: {
+			shape: 'dot',
+			margin: 20,
+			widthConstraint: {
+				maximum: 180,
+				minimum: 80
+			},
+			size: 20,
+			font: {
+				size: 24,
+				color: '#ffffff',
+				strokeWidth:5, 
+				strokeColor:'#222',
+				face: 'Economica'
+			},
+			borderWidth: 4,
+			fixed: true,
+		},
+		institute: {
+			shape: 'box',
+			margin: 6,
+			widthConstraint: {
+				maximum: 100,
+				minimum: 40
+			},
+			size: 10,
+			color: {
+				background:'#fff',
+				border: '#666699'
+			},
+			font: {
+				size: 14,
+				color: '#fff',
+				face: 'Economica'
+				// strokeWidth:5, 
+				// strokeColor:'#222'
+			},
+			borderWidth: 4,
+			fixed: true,
+		},
+	}
 }
-
-rlc.nodes = [];
-rlc.edges = [];
-rlc.data = {
-	tasks: []
-}
-
-rlc.network = ''
 
 $(function() {
-	console.log('initializing...')
 
-	$.getJSON('/api/task',function(data){
-		$.each(data,function(i,val){
-			rlc.data.tasks.push(val)
-		})
+	// get the data from multiple api requests first
+	// then start drawing the network map
+	$.when(
+		$.getJSON('/api/task',function(data){
+			$.each(data,function(i,val){
+				rlc.data.tasks.push(val)
+			})
+		}),
+		$.getJSON('/api/phase',function(data){
+			$.each(data,function(i,val){
+				rlc.data.phases.push(val)
+			})
+		}),
+		$.getJSON('/api/institute2task',function(data){
+			$.each(data,function(i,val){
+				rlc.data.institute2task.push(val)
+			})
+		}),
+
+	).then(function() {
 		// start by creating the nodes and edges
 		createNodesAndEdges()
 
 	})
+
 });
 
 function createNodesAndEdges()
@@ -207,78 +117,70 @@ function createNodesAndEdges()
 	// increment node id
 	rlc.options.nodeidstart++
 
-	// add edge
-	// rlc.edges.push(
-	// 	{from: 0, to: 1, length: 400, arrows:'to',dashes:[2,10], smooth: { enabled: true, "type": "curvedCW", roundness: 0.75}},)
-
 	// loop through phases
-	$.getJSON('/api/phase',function(data){
-		console.log(data)
 
-		$.each(data, function(i,phase){
-			// create title node
+	$.each(rlc.data.phases, function(i,phase){
+
+
+		coords = getNextXY()
+		var thisphase = 
+		{
+			id: rlc.options.nodeidstart, 
+			level: i+1,
+			x: coords[0],
+			y: coords[1],
+			label: phase.id+' ' +phase.name,
+			color: {
+				border: phase.color,
+				background: phase.color
+			},
+			title: '<h1>'+phase.name + '</h1><p>' + phase.description + '</p>'
+		}
+
+		rlc.edges.push(
+			{from: rlc.options.nodeidstart-1, to: rlc.options.nodeidstart, arrows:'to', smooth: { enabled: rlc.options.curved_edge, "type": rlc.options.curved_edge_type, roundness: 0.5}},
+		)
+
+		phase = $.extend({}, phase,thisphase,rlc.node_options.phase)
+
+		previous_phase_id = rlc.options.nodeidstart
+
+		//add to nodes
+		rlc.nodes.push(phase)
+
+		rlc.options.nodeidstart++
+
+		// get tasks for this phase
+		tasksbythisphase = getTasksByPhase(phase.name)
+
+		// loop and add node
+		$.each(tasksbythisphase, function(j,task){
+
+			task = $.extend({}, task,rlc.node_options.task)
+
+			task.id = rlc.options.nodeidstart
+			task.level = i+1
+			task.label = task.id+' ' +task.name
+			task.title = '<h3>'+task.name + '</h3><p>' + task.description + '</p>'
 
 			coords = getNextXY()
+			task.x = coords[0]
+			task.y = coords[1]
 
-			console.log(phase.name)
-			console.log(coords)
-			var thisphase = 
-			{
-				id: rlc.options.nodeidstart, 
-				level: i+1,
-				x: coords[0],
-				y: coords[1],
-				label: phase.name,
-				color: {
-					border: phase.color,
-					background: phase.color
-				},
-				font:{size: 25},
-				shape: 'box',
-				title:phase.name
+			task.color = {
+				border: phase.color.border,
+				background: 'white'
 			}
 
+			rlc.nodes.push(task)
 			rlc.edges.push(
 				{from: rlc.options.nodeidstart-1, to: rlc.options.nodeidstart, arrows:'to', smooth: { enabled: rlc.options.curved_edge, "type": rlc.options.curved_edge_type, roundness: 0.5}},
 			)
-
-			previous_phase_id = rlc.options.nodeidstart
-
-			//add to nodes
-			rlc.nodes.push(thisphase)
-
 			rlc.options.nodeidstart++
-
-			// get tasks for this phase
-			tasksbythisphase = getTasksByPhase(phase.name)
-
-			// loop and add node
-			$.each(tasksbythisphase, function(j,task){
-				task.id = rlc.options.nodeidstart
-				task.level = i+1
-				task.label = task.name
-				task.title = task.name
-
-				coords = getNextXY()
-				task.x = coords[0]
-				task.y = coords[1]
-
-				task.color = {
-					border: phase.color,
-					background: 'white'
-				}
-
-				rlc.nodes.push(task)
-				rlc.edges.push(
-					{from: rlc.options.nodeidstart-1, to: rlc.options.nodeidstart, arrows:'to', smooth: { enabled: rlc.options.curved_edge, "type": rlc.options.curved_edge_type, roundness: 0.5}},
-				)
-				rlc.options.nodeidstart++
-			})
 		})
-		// now that the nodes are done, create the network
-		createNetwork()
-
 	})
+	// now that the nodes are done, create the network
+	createNetwork()
 
 }
 
@@ -292,36 +194,36 @@ function createNetwork(){
 	rlc.data.edges = new vis.DataSet(rlc.edges)
 
 	rlc.network_options = {
-		physics: {
-			stabilization: {enabled: false, fit: true},
-			enabled: true,
-			forceAtlas2Based: {
-				gravitationalConstant: -2000,
-				centralGravity: 0.01,
-				springConstant: 0.08,
-				springLength: 1,
-				damping: 0.4,
-				avoidOverlap: 1
-			},
-			solver: 'barnesHut',
-		},
-		nodes: {
-			shape: 'dot',
-			margin: 20,
-			widthConstraint: {
-				maximum: 180,
-				minimum: 80
-			},
-			size: 20,
-			font: {
-				size: 16,
-				color: '#ffffff',
-				strokeWidth:5, 
-				strokeColor:'#222'
-			},
-			borderWidth: 4,
-			fixed: true,
-		},
+		// physics: {
+		// 	stabilization: {enabled: false, fit: true},
+		// 	enabled: true,
+		// 	forceAtlas2Based: {
+		// 		gravitationalConstant: -2000,
+		// 		centralGravity: 0.01,
+		// 		springConstant: 0.08,
+		// 		springLength: 1,
+		// 		damping: 0.4,
+		// 		avoidOverlap: 1
+		// 	},
+		// 	solver: 'barnesHut',
+		// },
+		// nodes: {
+		// 	shape: 'dot',
+		// 	margin: 20,
+		// 	widthConstraint: {
+		// 		maximum: 180,
+		// 		minimum: 80
+		// 	},
+		// 	size: 20,
+		// 	font: {
+		// 		size: 16,
+		// 		color: '#ffffff',
+		// 		strokeWidth:5, 
+		// 		strokeColor:'#222'
+		// 	},
+		// 	borderWidth: 4,
+		// 	fixed: true,
+		// },
 		edges: {
 			width: 4,
 			// length: 400
@@ -337,15 +239,41 @@ function createNetwork(){
 
 	rlc.network.fit()
 
-	rlc.network.on("hoverNode", function (params) {
-		console.log('hoverNode Event:', params);
-		$("#infopanel").html('<h2>'+rlc.data.nodes.get(params.node).label+'</h2>')
-	});
+	// hover a node and show information in the side panel
+	// rlc.network.on("hoverNode", function (params) {
+
+	// 	$("#infopanel").html('<h2>'+rlc.data.nodes.get(params.node).label+'</h2>')
+	// 	if(params.node>=100)
+	// 	{
+	// 		// showModal()			
+	// 	}
+	// 	else if (params.node < 100)
+	// 	{
+	// 		addInstitutes2Task(params.node)
+	// 	}
+	// 	else if (params.node = undefined)
+	// 	{
+	// 		console.log('oh no, you clicked in space')
+	// 	}
+
+	// });
+
+	// click on a node and show information in a modal
 	rlc.network.on("click", function (params) {
-		addInstitutes2Task(params.nodes[0])
-		params.event = "[original event]";
-		document.getElementById('infopanel').innerHTML = '<h2>Click event for '+params.nodes[0]+':</h2>' + JSON.stringify(rlc.data.nodes.get(params.nodes[0]), null, 4);
-		console.log(params.nodes[0]);
+		// if clicking on a node that is an institute, show modal, otherwise, expand
+		if(params.nodes[0]>=100)
+		{
+			showModal()			
+		}
+		else if (params.nodes[0] < 100)
+		{
+			addInstitutes2Task(params.nodes[0]) 
+		}
+		else if (params.nodes[0] = undefined)
+		{
+			console.log('oh no, you clicked in space')
+		}
+
 	});
 
 }
@@ -358,35 +286,126 @@ function getTasksByPhase (phase){
 			taskarray.push(val)
 		}
 	})
+	taskarray.sort((a, b) => (a.order > b.order) ? 1 : -1)
 	return taskarray
 }
 
 function addInstitutes2Task(taskid)
 {
+	// find institutes that support this task
+	var institute_array = []
+	$.each(rlc.data.institute2task,function(i,val){
+		if(val.task_id.id == taskid)
+		{
+			institute_array.push(val)
+		}
+	})
+	console.log('number of institutes for this task: '+institute_array.length)
+	if(institute_array.length > 0) 
+	{
+
+		var institute_id_start = 100
+		var x = rlc.data.nodes.get(taskid).x
+		var y = rlc.data.nodes.get(taskid).y
+		var x_distance_between_nodes = 70
+		var y_distance_between_nodes = 70
+		var radius = 150
+		var buffer_angle = 60 //degrees
+		var available_arc_angle = 180-buffer_angle*2
+
+		// distribute the nodes on an arc to the right side of the task node
+		// give a starting and ending buffer of 20 degrees on top and at the bottom
+		// to avoid overlap
+
+		if (institute_array.length == 1)
+		{
+			var angle_per_pie = 0
+		}
+		else
+		{
+			var angle_per_pie = available_arc_angle/(institute_array.length-1)
+		}
+
 		rlc.data.nodes.remove(100)
 		rlc.data.nodes.remove(101)
 		rlc.data.nodes.remove(102)
 		rlc.data.nodes.remove(103)
 		rlc.data.nodes.remove(104)
-
-		// Institutes
-		rlc.data.nodes.add({id: 100, fixed: false, label: "IDRE", borderWidth: 2,color:{border:'white',background: 'darkblue'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
-		rlc.data.nodes.add({id: 101, fixed: false, label: "Library", borderWidth: 2,color:{border:'white',background: 'lightgreen'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
-		rlc.data.nodes.add({id: 102, fixed: false, label: "Data Science Center", borderWidth: 2,color:{border:'white',background: 'brown'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
-		rlc.data.nodes.add({id: 103, fixed: false, label: "Local", borderWidth: 2,color:{border:'white',background: 'yellow'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
-		rlc.data.nodes.add({id: 104, fixed: false, label: "Peers", borderWidth: 2,color:{border:'white',background: 'purple'}, size: 10, font: {size: 10,	color: '#ffffff', strokeWidth:2, strokeColor:'#222'}})
-
 		rlc.data.edges.remove(100)
 		rlc.data.edges.remove(101)
 		rlc.data.edges.remove(102)
 		rlc.data.edges.remove(103)
 		rlc.data.edges.remove(104)
 
-		rlc.data.edges.add({id: 100, from: 100, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
-		rlc.data.edges.add({id: 101, from: 101, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
-		rlc.data.edges.add({id: 102, from: 102, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
-		rlc.data.edges.add({id: 103, from: 103, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
-		rlc.data.edges.add({id: 104, from: 104, to: taskid, width: 1, length: 50, smooth: { enabled: false}})
+
+		$.each(institute_array,function(i,institute){
+
+			var total_angle = buffer_angle+(i*angle_per_pie)
+			
+			console.log(total_angle)
+			// convert angles to radians
+			var total_radians = total_angle*(Math.PI/180)
+
+			var thisx = x-Math.sin(total_radians)*radius
+			if (total_angle<90){
+				var thisy = y-Math.cos(total_radians)*radius
+			}
+			else if (total_angle == 90)
+			{
+				var thisy = y
+			}
+			else
+			{
+				var thisy = y-Math.cos(total_radians)*radius
+			}
+
+			institute = $.extend({}, institute,rlc.node_options.institute)
+
+			institute.id = institute_id_start+i
+			institute.x = thisx
+			institute.y = thisy
+			institute.label = institute.institute_id.acronym, 
+			institute.title = '<h3>'+institute.institute_id.name+'</h3><p>'+institute.institute_id.description+'</p>'
+			institute.color.border = institute.institute_id.color
+			institute.color.background = institute.institute_id.color
+
+			rlc.data.nodes.add(institute)
+
+			// rlc.data.nodes.add(
+			// 	{
+			// 		id: 			institute_id_start+i, 
+			// 		shape: 			'box',
+			// 		fixed: 			true, 
+			// 		x: 				thisx, 
+			// 		y: 				thisy, 
+			// 		label: 			institute.institute_id.acronym, 
+			// 		title: 			'<h3>'+institute.institute_id.name+'</h3><p>'+institute.institute_id.description+'</p>', 
+			// 		borderWidth: 	2,
+			// 		color:{border: 	'white',
+			// 		background: 	'darkblue'}, 
+			// 		size: 			6, 
+			// 		font: {
+			// 						size: 10,	
+			// 						color: '#ffffff', 
+			// 						strokeWidth:2, 
+			// 						strokeColor:'#222'
+			// 		}
+			// 	})
+
+			rlc.data.edges.add(
+				{
+					id: 			institute_id_start+i, 
+					from: 			institute_id_start+i, 
+					to: 			taskid, 
+					width: 			1, 
+					length: 		50, 
+					smooth: { 
+									enabled: false
+					}
+				})
+			
+		})		
+	}
 
 
 }
@@ -435,4 +454,7 @@ function getNextXY(task)
 	return [x,y]
 }
 
+function showModal(){
+	$('#exampleModalCenter').modal('show');
+}
 

@@ -47,6 +47,7 @@ class Institute(Model):
     acronym = TextField()
     created_at = DateTimeField()
     url = TextField()
+    color = TextField()
     class Meta:
         database = db
         db_table = 'institute'
