@@ -6,8 +6,10 @@ from playhouse.postgres_ext import PostgresqlExtDatabase
 import os
     
 # load the config file
-
-from config import Config
+try:
+    from config import Config
+except:
+    print('no config')
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 
