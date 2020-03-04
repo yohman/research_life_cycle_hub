@@ -32,7 +32,7 @@ else:
     hst = Config.HOST
     prt = Config.PORT
     
-db = PostgresqlDatabase(database=datab, user=usr, password=pwd, host=hst, port=prt)
+db = PostgresqlDatabase(database=datab, user=usr, password=pwd, host=hst, port=prt,sslmode='require')
 db.connect()
 # tables = db.get_tables()
 
