@@ -11,9 +11,6 @@ from config import Config
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 
-
-from boto.s3.connection import S3Connection
-
 on_heroku = False
 if 'ON_HEROKU' in os.environ:
     on_heroku =True
