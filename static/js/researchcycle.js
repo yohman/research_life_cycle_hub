@@ -240,23 +240,23 @@ function createNetwork(){
 	rlc.network.fit()
 
 	// hover a node and show information in the side panel
-	// rlc.network.on("hoverNode", function (params) {
+	rlc.network.on("hoverNode", function (params) {
 
-	// 	$("#infopanel").html('<h2>'+rlc.data.nodes.get(params.node).label+'</h2>')
-	// 	if(params.node>=100)
-	// 	{
-	// 		// showModal()			
-	// 	}
-	// 	else if (params.node < 100)
-	// 	{
-	// 		addInstitutes2Task(params.node)
-	// 	}
-	// 	else if (params.node = undefined)
-	// 	{
-	// 		console.log('oh no, you clicked in space')
-	// 	}
+		$("#infopanel").html('<h2>'+rlc.data.nodes.get(params.node).label+'</h2>')
+		if(params.node>=100)
+		{
+			// showModal()			
+		}
+		else if (params.node < 100)
+		{
+			addInstitutes2Task(params.node)
+		}
+		else if (params.node = undefined)
+		{
+			console.log('oh no, you clicked in space')
+		}
 
-	// });
+	});
 
 	// click on a node and show information in a modal
 	rlc.network.on("click", function (params) {
@@ -267,7 +267,11 @@ function createNetwork(){
 		}
 		else if (params.nodes[0] < 100)
 		{
-			addInstitutes2Task(params.nodes[0]) 
+			addInstitutes2Task(params.nodes[0])
+			rlc.network.focus(params.nodes[0],{
+				scale:1,
+				animation:true
+			})
 		}
 		else if (params.nodes[0] = undefined)
 		{
