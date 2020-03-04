@@ -3,15 +3,37 @@ from peewee import *
 from flask import session
 from playhouse.postgres_ext import PostgresqlExtDatabase
 
+import os
+    
 # load the config file
+
 from config import Config
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 
 
-db = PostgresqlDatabase(database=Config.DATABASE, user=Config.USERNAME, password=Config.SECRET_KEY,
-host=Config.HOST, port=Config.PORT)
+from boto.s3.connection import S3Connection
 
+on_heroku = False
+if 'ON_HEROKU' in os.environ:
+    on_heroku =True
+
+if on_heroku == True:
+    datab = os.environ['database']
+    usr = os.environ['user']
+    pwd = os.environ['password']
+    hst = os.environ['host']
+    prt = os.environ['port']
+
+else:
+    print('not on heroku!')
+    datab = Config.DATABASE
+    usr = Config.USERNAME
+    pwd = Config.SECRET_KEY
+    hst = Config.HOST
+    prt = Config.PORT
+    
+db = PostgresqlDatabase(database=datab, user=usr, password=pwd, host=hst, port=prt)
 db.connect()
 # tables = db.get_tables()
 
