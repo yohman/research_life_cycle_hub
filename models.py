@@ -18,11 +18,11 @@ if 'ON_HEROKU' in os.environ:
     on_heroku =True
 
 if on_heroku == True:
-    datab = os.environ['database']
-    usr = os.environ['user']
-    pwd = os.environ['password']
-    hst = os.environ['host']
-    prt = os.environ['port']
+    datab = os.environ['DATABASE']
+    usr = os.environ['USERNAME']
+    pwd = os.environ['SECRET_KEY']
+    hst = os.environ['HOST']
+    prt = os.environ['PORT']
 
 else:
     print('not on heroku!')
