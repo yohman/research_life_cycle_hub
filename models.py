@@ -9,29 +9,33 @@ import os
 try:
     from config import Config
     print('not on heroku!')
-    d_b = Config.DATABASE
-    usr = Config.USERNAME
-    pwd = Config.SECRET_KEY
-    hst = Config.HOST
-    prt = Config.PORT
+    # d_b = Config.DATABASE
+    # usr = Config.USERNAME
+    # pwd = Config.SECRET_KEY
+    # hst = Config.HOST
+    # prt = Config.PORT
+    DATABASE_URL = Config.DATABASE_URL
 except:
-    d_b = os.environ['DATABASE']
-    usr = os.environ['USERNAME']
-    pwd = os.environ['SECRET_KEY']
-    hst = os.environ['HOST']
-    prt = os.environ['PORT']
+    # d_b = os.environ['DATABASE']
+    # usr = os.environ['USERNAME']
+    # pwd = os.environ['SECRET_KEY']
+    # hst = os.environ['HOST']
+    # prt = os.environ['PORT']
     print('in heroku')
-    print(d_b)
-    print(usr)
-    print(pwd)
-    print(hst)
-    print(prt)
+    # print(d_b)
+    # print(usr)
+    # print(pwd)
+    # print(hst)
+    # print(prt)
 
-
+# import psycopg2
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
+from playhouse.db_url import connect
 
-db = PostgresqlDatabase(database=d_b, user=usr, password=pwd, host=hst, port=prt)
+db = connect(os.environ.get('DATABASE_URL') or Config.DATABASE_URL, sslmode='require')
+
+# db = PostgresqlDatabase(database=d_b, user=usr, password=pwd, host=hst, port=prt)
 # db.connect()
 # tables = db.get_tables()
 

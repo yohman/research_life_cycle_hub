@@ -10,3 +10,4 @@ wtf-peewee
 gunicorn
 flask_peewee
 psycopg2
+psycopg2-binary
