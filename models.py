@@ -9,28 +9,29 @@ import os
 try:
     from config import Config
     print('not on heroku!')
-    datab = Config.DATABASE
+    d_b = Config.DATABASE
     usr = Config.USERNAME
     pwd = Config.SECRET_KEY
     hst = Config.HOST
     prt = Config.PORT
 except:
+    d_b = os.environ['DATABASE']
+    usr = os.environ['USERNAME']
+    pwd = os.environ['SECRET_KEY']
+    hst = os.environ['HOST']
+    prt = os.environ['PORT']
     print('in heroku')
-    print(datab)
+    print(d_b)
     print(usr)
     print(pwd)
     print(hst)
     print(prt)
 
-    datab = os.environ['DATABASE']
-    usr = os.environ['USERNAME']
-    pwd = os.environ['SECRET_KEY']
-    hst = os.environ['HOST']
-    prt = os.environ['PORT']
+
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 
-db = PostgresqlDatabase(database=datab, user=usr, password=pwd, host=hst, port=prt,sslmode='require')
+db = PostgresqlDatabase(database=d_b, user=usr, password=pwd, host=hst, port=prt,sslmode='require')
 # db.connect()
 # tables = db.get_tables()
 
