@@ -23,6 +23,12 @@ if on_heroku == True:
     pwd = os.environ['SECRET_KEY']
     hst = os.environ['HOST']
     prt = os.environ['PORT']
+    print('in heroku')
+    print(datab)
+    print(usr)
+    print(pwd)
+    print(hst)
+    print(prt)
 
 else:
     print('not on heroku!')
@@ -33,7 +39,7 @@ else:
     prt = Config.PORT
     
 db = PostgresqlDatabase(database=datab, user=usr, password=pwd, host=hst, port=prt,sslmode='require')
-db.connect()
+# db.connect()
 # tables = db.get_tables()
 
 
