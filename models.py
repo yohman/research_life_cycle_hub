@@ -3,16 +3,35 @@ from peewee import *
 from flask import session
 from playhouse.postgres_ext import PostgresqlExtDatabase
 
+import os
+    
 # load the config file
-from config import Config
+try:
+    from config import Config
+    print('not on heroku!')
+    datab = Config.DATABASE
+    usr = Config.USERNAME
+    pwd = Config.SECRET_KEY
+    hst = Config.HOST
+    prt = Config.PORT
+except:
+    print('in heroku')
+    print(datab)
+    print(usr)
+    print(pwd)
+    print(hst)
+    print(prt)
+
+    datab = os.environ['DATABASE']
+    usr = os.environ['USERNAME']
+    pwd = os.environ['SECRET_KEY']
+    hst = os.environ['HOST']
+    prt = os.environ['PORT']
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 
-
-db = PostgresqlDatabase(database=Config.DATABASE, user=Config.USERNAME, password=Config.SECRET_KEY,
-host=Config.HOST, port=Config.PORT)
-
-db.connect()
+db = PostgresqlDatabase(database=datab, user=usr, password=pwd, host=hst, port=prt,sslmode='require')
+# db.connect()
 # tables = db.get_tables()
 
 
