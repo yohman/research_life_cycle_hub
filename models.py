@@ -31,7 +31,7 @@ except:
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 
-db = PostgresqlDatabase(database=d_b, user=usr, password=pwd, host=hst, port=prt,sslmode='require')
+db = PostgresqlDatabase(database=d_b, user=usr, password=pwd, host=hst, port=prt)
 # db.connect()
 # tables = db.get_tables()
 
