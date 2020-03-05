@@ -112,20 +112,18 @@ function createNodesAndEdges()
 {
 	// Idea logo
 	rlc.nodes.push(
-			{id: rlc.options.nodeidstart, level: 0, group: 100, image: '../static/images/idea.png', shape: 'image', size: 100,  x: -450, y: 100, font:{color:'#ffffff'}},)
+			{id: 'idea', level: 0, group: 100, image: '../static/images/idea.png', shape: 'image', size: 100,  x: -450, y: 100, font:{color:'#ffffff'}},)
 
-	// increment node id
-	rlc.options.nodeidstart++
+	previous_node_id = 'idea'
 
 	// loop through phases
-
 	$.each(rlc.data.phases, function(i,phase){
 
-
+		// get the position in the grid for this node
 		coords = getNextXY()
 		var thisphase = 
 		{
-			id: rlc.options.nodeidstart, 
+			id: phase.id+'_phase', 
 			level: i+1,
 			x: coords[0],
 			y: coords[1],
@@ -137,51 +135,80 @@ function createNodesAndEdges()
 			title: '<h1>'+phase.name + '</h1><p>' + phase.description + '</p>'
 		}
 
+		// draw the arrow from the previous node to this phase
+		console.log('create arrow from '+ previous_node_id+' to '+phase.id+'_phase')
 		rlc.edges.push(
-			{from: rlc.options.nodeidstart-1, to: rlc.options.nodeidstart, arrows:'to', smooth: { enabled: rlc.options.curved_edge, "type": rlc.options.curved_edge_type, roundness: 0.5}},
+			{
+				from: previous_node_id, 
+				to: phase.id+'_phase', 
+				// from: rlc.options.nodeidstart-1, 
+				// to: rlc.options.nodeidstart, 
+				arrows:'to', 
+				smooth: { 
+					enabled: rlc.options.curved_edge, 
+					"type": rlc.options.curved_edge_type, 
+					roundness: 0.5
+				}
+			},
 		)
 
+		// append new data and phase options to the phase object 
 		phase = $.extend({}, phase,thisphase,rlc.node_options.phase)
-
-		previous_phase_id = rlc.options.nodeidstart
 
 		//add to nodes
 		rlc.nodes.push(phase)
 
-		rlc.options.nodeidstart++
+		// reset the previous node
+		previous_node_id = phase.id
 
 		// get tasks for this phase
 		tasksbythisphase = getTasksByPhase(phase.name)
 
-		// loop and add node
+		// loop and add nodes
 		$.each(tasksbythisphase, function(j,task){
 
+			// append task options to this task
 			task = $.extend({}, task,rlc.node_options.task)
 
-			task.id = rlc.options.nodeidstart
+			// set task attributes
 			task.level = i+1
 			task.label = task.id+' ' +task.name
 			task.title = '<h3>'+task.name + '</h3><p>' + task.description + '</p>'
-
-			coords = getNextXY()
-			task.x = coords[0]
-			task.y = coords[1]
-
 			task.color = {
 				border: phase.color.border,
 				background: 'white'
 			}
 
+			// set the position in grid
+			coords = getNextXY()
+			task.x = coords[0]
+			task.y = coords[1]
+
 			rlc.nodes.push(task)
+
+			// create the arrow from previous node to this task
+			console.log('create arrow from '+previous_node_id+' to '+task.id)
 			rlc.edges.push(
-				{from: rlc.options.nodeidstart-1, to: rlc.options.nodeidstart, arrows:'to', smooth: { enabled: rlc.options.curved_edge, "type": rlc.options.curved_edge_type, roundness: 0.5}},
+				{
+					from: previous_node_id, 
+					// from: rlc.options.nodeidstart-1, 
+					to: task.id, 
+					// to: rlc.options.nodeidstart, 
+					arrows:'to', 
+					smooth: { 
+						enabled: rlc.options.curved_edge, 
+						"type": rlc.options.curved_edge_type, 
+						roundness: 0.5
+					}
+				},
 			)
-			rlc.options.nodeidstart++
+
+			previous_node_id = task.id
 		})
 	})
-	// now that the nodes are done, create the network
-	createNetwork()
 
+	// now that the nodes and edges are set, create the network
+	createNetwork()
 }
 
 function createNetwork(){
@@ -194,36 +221,6 @@ function createNetwork(){
 	rlc.data.edges = new vis.DataSet(rlc.edges)
 
 	rlc.network_options = {
-		// physics: {
-		// 	stabilization: {enabled: false, fit: true},
-		// 	enabled: true,
-		// 	forceAtlas2Based: {
-		// 		gravitationalConstant: -2000,
-		// 		centralGravity: 0.01,
-		// 		springConstant: 0.08,
-		// 		springLength: 1,
-		// 		damping: 0.4,
-		// 		avoidOverlap: 1
-		// 	},
-		// 	solver: 'barnesHut',
-		// },
-		// nodes: {
-		// 	shape: 'dot',
-		// 	margin: 20,
-		// 	widthConstraint: {
-		// 		maximum: 180,
-		// 		minimum: 80
-		// 	},
-		// 	size: 20,
-		// 	font: {
-		// 		size: 16,
-		// 		color: '#ffffff',
-		// 		strokeWidth:5, 
-		// 		strokeColor:'#222'
-		// 	},
-		// 	borderWidth: 4,
-		// 	fixed: true,
-		// },
 		edges: {
 			width: 4,
 			// length: 400
@@ -249,6 +246,7 @@ function createNetwork(){
 		}
 		else if (params.node < 100)
 		{
+			console.log(params)
 			addInstitutes2Task(params.node)
 		}
 		else if (params.node = undefined)
@@ -346,7 +344,6 @@ function addInstitutes2Task(taskid)
 
 			var total_angle = buffer_angle+(i*angle_per_pie)
 			
-			console.log(total_angle)
 			// convert angles to radians
 			var total_radians = total_angle*(Math.PI/180)
 
