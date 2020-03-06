@@ -41,8 +41,8 @@ div.vis-tooltip {
 }
 
 .modal-header, .modal-footer{
-    background: gray;
+    background: #333;
 }
 .modal-body {
-    background-color: dimgray;
+    background-color: #222222;
 }

@@ -129,7 +129,8 @@ function createNodesAndEdges()
 			level: i+1,
 			x: coords[0],
 			y: coords[1],
-			label: phase.id+' ' +phase.name,
+			label: phase.name,
+			// label: phase.id+' ' +phase.name,
 			color: {
 				border: phase.color,
 				background: phase.color
@@ -174,7 +175,8 @@ function createNodesAndEdges()
 
 			// set task attributes
 			task.level = i+1
-			task.label = task.id+' ' +task.name
+			task.label = task.name
+			// task.label = task.id+' ' +task.name
 			task.title = '<h3>'+task.name + '</h3><p>' + task.description + '</p>'
 			task.color = {
 				border: phase.color.border,
