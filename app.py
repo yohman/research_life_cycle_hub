@@ -4,8 +4,16 @@ from flask import Flask, render_template,flash, redirect, request, url_for,jsoni
 
 from playhouse.shortcuts import model_to_dict, dict_to_model
 from playhouse.dataset import DataSet
+from flask_admin import Admin
+
+from flask_admin.contrib.peewee import ModelView
+
 
 from models import *
+
+
+# define the application
+app = Flask(__name__)
 
 # function for querying the data
 def model_select(model):
@@ -23,8 +31,15 @@ def add_data(*args):
             data += model_select(r)
     return data
 
-# define the application
-app = Flask(__name__)
+app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or Config.SECRET_KEY
+admin = Admin(app, name='microblog', template_mode='bootstrap3')
+admin.add_view(ModelView(Person))
+admin.add_view(ModelView(Task))
+admin.add_view(ModelView(Institute))
+admin.add_view(ModelView(Tag))
+admin.add_view(ModelView(InstituteTask))
+
 
 # set the default route
 @app.route('/')
