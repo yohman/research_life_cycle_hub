@@ -31,7 +31,7 @@ def add_data(*args):
             data += model_select(r)
     return data
 
-app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
+app.config['FLASK_ADMIN_SWATCH'] = 'slate'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or Config.SECRET_KEY
 admin = Admin(app, name='RLC Admin', template_mode='bootstrap3')
 admin.add_view(ModelView(Person))
