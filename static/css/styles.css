@@ -39,3 +39,10 @@ div.vis-tooltip {
     max-width: 400px;
     /* overflow-wrap: break-word; */
 }
+
+.modal-header, .modal-footer{
+    background: gray;
+}
+.modal-body {
+    background-color: dimgray;
+}

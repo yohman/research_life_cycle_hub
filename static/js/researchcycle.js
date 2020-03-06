@@ -101,6 +101,8 @@ $(function() {
 		}),
 
 	).then(function() {
+		// launch modal
+		$('#rlcmodal').modal('show')
 		// start by creating the nodes and edges
 		createNodesAndEdges()
 
