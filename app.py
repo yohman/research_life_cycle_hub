@@ -39,6 +39,9 @@ admin.add_view(ModelView(Task))
 admin.add_view(ModelView(Institute))
 admin.add_view(ModelView(Tag))
 admin.add_view(ModelView(InstituteTask))
+admin.add_view(ModelView(PersonInstitute))
+admin.add_view(ModelView(TagPerson))
+admin.add_view(ModelView(TagTask))
 
 
 # set the default route
@@ -63,7 +66,11 @@ def the_api(data):
     elif data == "institute2task":
         the_data = add_data(InstituteTask)        
     elif data == "person":
-        the_data = add_data(Person)
+        the_data = add_data(PersonInstitute)
+    elif data == "person":
+        the_data = add_data(TagPerson)
+    elif data == "person":
+        the_data = add_data(TagTask)
         
     # tables = db.get_tables()
     # # print(tables)

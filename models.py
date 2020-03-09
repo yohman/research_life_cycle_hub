@@ -30,7 +30,7 @@ db = connect(os.environ.get('DATABASE_URL') or Config.DATABASE_URL, sslmode=sslv
 
 
 class Phase(peewee.Model):
-    id = peewee.IntegerField()
+    id = peewee.AutoField(primary_key=True)
     name = peewee.TextField()
     description = peewee.TextField()
     color = peewee.TextField()
@@ -42,7 +42,7 @@ class Phase(peewee.Model):
         db_table = 'phase'
 
 class Task(peewee.Model):
-    id = peewee.IntegerField()
+    id = peewee.AutoField(primary_key=True)
     name = peewee.TextField()
     description = peewee.TextField()
     order = peewee.IntegerField()
@@ -54,7 +54,7 @@ class Task(peewee.Model):
         db_table = 'task'
 
 class Institute(peewee.Model):
-    id = peewee.IntegerField()
+    id = peewee.AutoField(primary_key=True)
     name = peewee.TextField()
     description = peewee.TextField()
     acronym = peewee.TextField()
@@ -67,7 +67,9 @@ class Institute(peewee.Model):
 
 
 class Person(peewee.Model):
-    id = peewee.IntegerField()
+    id = peewee.AutoField(primary_key=True)
+    # first_name = peewee.TextField()
+    # last_name = peewee.TextField()
     name = peewee.TextField()
     description = peewee.TextField()
     created_at = peewee.DateTimeField()
@@ -80,7 +82,7 @@ class Person(peewee.Model):
 
 
 class Tag(peewee.Model):
-    id = peewee.IntegerField()
+    id = peewee.AutoField(primary_key=True)
     name = peewee.TextField()
     description = peewee.TextField()
     created_at = peewee.DateTimeField()
@@ -111,7 +113,7 @@ class PersonInstitute(peewee.Model):
         db_table = 'person_to_institute'
 
 
-class tag_to_person(peewee.Model):
+class TagPerson(peewee.Model):
     tag_id = peewee.ForeignKeyField(Tag)
     person_id = peewee.ForeignKeyField(Person)
 
