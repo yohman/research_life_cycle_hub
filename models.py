@@ -22,11 +22,13 @@ except:
 from flask_peewee.auth import Auth
 from flask_peewee.db import Database
 from playhouse.db_url import connect
+from flask_admin.contrib.peewee import ModelView
 
 db = connect(os.environ.get('DATABASE_URL') or Config.DATABASE_URL, sslmode=sslvalue)
 
 # db = PostgresqlDatabase(database=d_b, user=usr, password=pwd, host=hst, port=prt)
 # db.connect()
+
 
 
 class Phase(peewee.Model):
@@ -68,8 +70,8 @@ class Institute(peewee.Model):
 
 class Person(peewee.Model):
     id = peewee.AutoField(primary_key=True)
-    # first_name = peewee.TextField()
-    # last_name = peewee.TextField()
+    first_name = peewee.TextField()
+    last_name = peewee.TextField()
     name = peewee.TextField()
     description = peewee.TextField()
     created_at = peewee.DateTimeField()
@@ -79,7 +81,8 @@ class Person(peewee.Model):
         database = db
         db_table = 'person'
 
-
+class UserView(ModelView):
+     form_excluded_columns = ('name','created_at')
 
 class Tag(peewee.Model):
     id = peewee.AutoField(primary_key=True)
