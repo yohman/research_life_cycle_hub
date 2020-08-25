@@ -49,7 +49,8 @@ admin.add_view(ModelView(TagTask))
 # set the default route
 @app.route('/')
 def index():
-    return render_template('map.html')
+    # return render_template('map.html')
+    return render_template('index.html')
 
 def find_table(table):
     return table
@@ -62,11 +63,11 @@ def the_api(data):
     elif data == "phase":
         the_data = add_data(Phase)
     elif data == "task":
-        the_data = add_data(Task)
+        the_data = add_data(TaskView)
     elif data == "institute":
         the_data = add_data(Institute)
     elif data == "institute2task":
-        the_data = add_data(InstituteTask)        
+        the_data = add_data(InstituteTaskView)        
     elif data == "person":
         the_data = add_data(PersonInstitute)
     elif data == "person":

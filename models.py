@@ -55,6 +55,7 @@ class Task(peewee.Model):
         database = db
         db_table = 'task'
 
+
 class Institute(peewee.Model):
     id = peewee.AutoField(primary_key=True)
     name = peewee.TextField()
@@ -106,7 +107,6 @@ class InstituteTask(peewee.Model):
         database = db
         db_table = 'institute_to_task'
 
-
 class PersonInstitute(peewee.Model):
     institute_id = peewee.ForeignKeyField(Institute)
     person_id = peewee.ForeignKeyField(Person)
@@ -133,4 +133,27 @@ class TagTask(peewee.Model):
         database = db
         db_table = 'tag_to_task'
 
+
+# VIEWS
+
+class TaskView(peewee.Model):
+    id = peewee.AutoField(primary_key=True)
+    name = peewee.TextField()
+    description = peewee.TextField()
+    order = peewee.IntegerField()
+    created_at = peewee.DateTimeField()
+    phase_id = peewee.IntegerField()
+
+    class Meta:
+        database = db
+        db_table = 'task'
+        
+class InstituteTaskView(peewee.Model):
+    id = peewee.IntegerField()
+    institute_id = peewee.IntegerField()
+    task_id = peewee.IntegerField()
+
+    class Meta:
+        database = db
+        db_table = 'institute_to_task'
 
