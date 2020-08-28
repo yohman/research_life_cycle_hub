@@ -78,6 +78,9 @@ var rlc = {
 			borderWidth: 4,
 			fixed: true,
 		},
+	},
+	icons: {
+		more_info: ' <svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-info-circle-fill" fill="#ccc" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-8.354 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.793 7.5H5a.5.5 0 0 0 0 1h4.793l-2.147 2.146z"/></svg>'
 	}
 }
 
@@ -109,6 +112,11 @@ $(function() {
 
 	).then(function() {
 
+		// sort the data
+		// list.sort((a, b) => (a.color > b.color) ? 1 : -1)
+		rlc.data.phases.sort((a,b) => (a.order > b.order) ? 1 : -1)
+		rlc.data.tasks.sort((a,b) => (a.order > b.order) ? 1 : -1)
+		rlc.data.institutes.sort((a,b) => (a.acronym > b.acronym) ? 1 : -1)
 		// start by creating the nodes and edges
 		start()
 
@@ -121,24 +129,52 @@ function start()
 {
 	// $('#main-title').html('Phases')
 	var html = ''
-	$.each(rlc.data.phases,function(i,val){
-		var tasks = getTasksByPhaseID(val.id)
-		html += '<nav class="navbar navbar-light bg-light"><span class="navbar-brand mb-0 h1">Phase '+(i+1)+': '+val.name+'</span></nav>'
-		html += '<ol>'
-		$.each(tasks,function(j,val){
-			var institutes = getInstitutesByTaskID(val.id)
-			console.log(institutes)
-			html += '<li style="padding-bottom:10px">'+val.name
-			html += '<p>'+val.description+'</p>'
-			html += '<p>'
-			$.each(institutes,function(k,val){
-				institute = getInstituteByInstituteID(val.institute_id)
-				html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+institute.color+'">'+institute.acronym+'</a> ' 
+
+	// loop through each phase
+	$.each(rlc.data.phases,function(i,phase){
+		var tasks = getTasksByPhaseID(phase.id)
+			console.log(phase)
+
+		// first, append to the banner
+		$('#banner-section').append('<a href="#'+phase.name+'" class="economica">'+phase.name+rlc.icons.more_info+' </a>')
+
+		html += '<a id="'+phase.name+'"></a><nav class="navbar navbar-light bg-light" style="background:'+phase.color+'"><span class="navbar-brand mb-0 h1">Phase '+(i+1)+': '+phase.name+'</span><small>'+phase.description+'</small></nav>'
+
+		// list option
+		// html += '<ol>'
+		// $.each(tasks,function(j,task){
+		// 	var institutes = getInstitutesByTaskID(task.id)
+		// 	html += '<div class="circle" style="background:'+phase.color+'">'+(j+1)+'</div>'
+		// 	html += '<li style="padding-bottom:10px">'+task.name
+		// 	html += '<p>'+task.description+'</p>'
+		// 	html += '<p>'
+		// 	$.each(institutes,function(k,institute){
+		// 		thisinstitute = getInstituteByInstituteID(institute.institute_id)
+		// 		html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
+		// 	})
+		// 	html += '</p>'
+		// 	html += '</li>'
+		// })
+		// html += '</ol>'
+
+		// table option
+		html += '<table class="table">'
+		$.each(tasks,function(j,task){
+			var institutes = getInstitutesByTaskID(task.id)
+			html += '<tr>'
+			html += '<td><div class="circle" style="background:'+phase.color+'">'+(j+1)+'</div><div class="vl" style="color:'+phase.color+'"></div></td>'
+			html += '<td><h3>'+task.name
+			html += rlc.icons.more_info+'</h3>'
+			html += '<p>'+task.description+'</p>'
+			// html += '</td>'
+			$.each(institutes,function(k,institute){
+				thisinstitute = getInstituteByInstituteID(institute.institute_id)
+				html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
 			})
-			html += '</p>'
-			html += '</li>'
+			html += '</td>'
+			html += '</tr>'
 		})
-		html += '</ol>'
+		html += '</table>'
 	})
 	// html += '</ul>'
 	// console.log(html)
@@ -149,7 +185,7 @@ function start()
 		institute = getInstituteByInstituteID(val.id)
 		sidehtml += '<tr><td>'
 		sidehtml += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+institute.color+'">'+institute.acronym+'</a></td>'
-		sidehtml += '<td style="font-size:.8em">'+institute.name+'</td></tr>'
+		sidehtml += '<td style="font-size:.8em">'+institute.name+rlc.icons.more_info+'</td></tr>'
 		// sidehtml += '<p>' + institute.description+'</p>' 
 
 	})
