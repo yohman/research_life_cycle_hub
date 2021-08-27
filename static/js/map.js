@@ -1,182 +1,8 @@
-// namespace
-var rlc = {
-	options: {
-		ydistance_between: 	200,
-		xdistance_between: 	450,
-		current_x: 			0,
-		current_y: 			0,
-		direction: 			'down',
-		curved_edge: 		false,
-		curved_edge_type: 	'curvedCW',
-		nodes_per_column: 	7,
-		nodeidstart: 		0,
-	},
-	nodes: [],
-	edges: [],
-	data: {
-		tasks: [],
-		phases: [],
-		institute2task: []
-	},
-	network: '',
-	node_options: {
-		phase: {
-			font:{
-				size: 50,
-				color: '#ffffff',
-				face: 'Economica'
-			},
-			shape: 'box',
-			margin: 20,
-			widthConstraint: {
-				maximum: 200,
-				minimum: 200
-			},
-			size: 20,
-			borderWidth: 4,
-			fixed: true,
-		},
-		task: {
-			shape: 'dot',
-			margin: 20,
-			widthConstraint: {
-				maximum: 180,
-				minimum: 80
-			},
-			size: 20,
-			font: {
-				size: 24,
-				color: '#ffffff',
-				strokeWidth:5, 
-				strokeColor:'#222',
-				face: 'Economica'
-			},
-			borderWidth: 4,
-			fixed: true,
-		},
-		institute: {
-			shape: 'box',
-			margin: 6,
-			widthConstraint: {
-				maximum: 100,
-				minimum: 40
-			},
-			size: 10,
-			color: {
-				background:'#fff',
-				border: '#666699'
-			},
-			font: {
-				size: 14,
-				color: '#fff',
-				face: 'Economica'
-				// strokeWidth:5, 
-				// strokeColor:'#222'
-			},
-			borderWidth: 4,
-			fixed: true,
-		},
-	}
+function createNetworkMap(){
+	createNetworkData();
 }
 
-/*
-
-	function to parse csv files
-
-*/ 
-function parseCsv(url, stepArr){
-	return new Promise(function(resolve, reject){
-		Papa.parse(url, {
-			download:true,
-			header:true,
-			complete: resolve       
-		});        
-	});
-}
-
-$(function() {
-	console.log('getting data...')
-
-	/*
-
-		list of data to parse
-
-	*/ 
-
-	const task = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vRBYB-vGl6QdGClfN4_VgK71bhiUoY21YA-Su9bsJqFOcD7_gv82L1UHW3M6Hcwqnz3018oNIS1zfbQ/pub?gid=393279233&single=true&output=csv')
-	const institute = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSZx8lTLKCD1kX-vSY-NTKQrtcCLqUMpW-BgTSO3sT4ZaEmC8jc1Uy1YO35xosWpGYTuIVRUB20bfU5/pub?gid=265372426&single=true&output=csv')
-	const phase = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSeME7cyJX0Z8VxhbOXgQwClHY1kpoxwFe6A1I4mLV8m7FtiZh9yJXL5HIrlH_KNzrcqMM8ItobTW-T/pub?output=csv')
-	const institute2task = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXFzxGeBGMpuHA4a6OxwJsyP14ckxZueMAJ4EAULBrCqKKB9urI9enKqTM3_qhtec6c3Z6MbcyfMc/pub?gid=1379978136&single=true&output=csv')
-
-
-	/*
-
-		put them in a promise to load all data before moving on to the next step
-
-	*/ 
-	console.log('start promise...')
-	var t0 = performance.now()
-	Promise.all(
-		// [geojsondata,csvdata,csvdata2,googledata]
-		[task,institute,phase,institute2task]
-	).then(
-		function(results){
-			var t1 = performance.now()
-			console.log("Call to get data took " + (t1 - t0) + " milliseconds.")
-			/*
-			
-				put the data in global variables
-			
-			*/ 
-			rlc.data.tasks = results[0].data
-			rlc.data.phases = results[1].data
-			rlc.data.institutes = results[2].data
-			rlc.data.institute2task = results[3].data
-
-			rlc.data.phases.sort((a,b) => (a.order > b.order) ? 1 : -1)
-			rlc.data.tasks.sort((a,b) => (a.order > b.order) ? 1 : -1)
-			rlc.data.institutes.sort((a,b) => (a.acronym > b.acronym) ? 1 : -1)
-			// launch modal
-			// $('#rlcmodal').modal('show')
-			// start by creating the nodes and edges
-			createNodesAndEdges()
-
-		}
-	)
-});
-
-// $(function() {
-
-// 	// get the data from multiple api requests first
-// 	// then start drawing the network map
-// 	$.when(
-// 		$.getJSON('/api/task',function(data){
-// 			$.each(data,function(i,val){
-// 				rlc.data.tasks.push(val)
-// 			})
-// 		}),
-// 		$.getJSON('/api/phase',function(data){
-// 			$.each(data,function(i,val){
-// 				rlc.data.phases.push(val)
-// 			})
-// 		}),
-// 		$.getJSON('/api/institute2task',function(data){
-// 			$.each(data,function(i,val){
-// 				rlc.data.institute2task.push(val)
-// 			})
-// 		}),
-
-// 	).then(function() {
-// 		// launch modal
-// 		$('#rlcmodal').modal('show')
-// 		// start by creating the nodes and edges
-// 		createNodesAndEdges()
-
-// 	})
-
-// });
-
-function createNodesAndEdges()
+function createNetworkData()
 {
 	// Idea logo
 	rlc.nodes.push(
@@ -283,9 +109,14 @@ function createNodesAndEdges()
 
 function createNetwork(){
 
-	// create a network
-	rlc.container = document.getElementById('mynetwork');
+	// empty list
+	$('#main-content').hide()
+	$('#main-network').show()
 
+	// create a network
+	rlc.container = document.getElementById('network-body');
+	$('#network-body').css('background-color','gainsboro')
+	$('#network-body').css('height','calc(100vh - 210px)')
 	// set the nodes and edges
 	rlc.data.nodes = new vis.DataSet(rlc.nodes)
 	rlc.data.edges = new vis.DataSet(rlc.edges)
@@ -309,7 +140,7 @@ function createNetwork(){
 	// hover a node and show information in the side panel
 	rlc.network.on("hoverNode", function (params) {
 
-		$("#infopanel").html('<h2>'+rlc.data.nodes.get(params.node).label+'</h2>')
+		// $("#side-content").html('<h2>'+rlc.data.nodes.get(params.node).label+'</h2>')
 		if(params.node>=100)
 		{
 			// showModal()			
@@ -347,7 +178,32 @@ function createNetwork(){
 		}
 
 	});
-
+	let MIN_ZOOM = 0.3
+	let MAX_ZOOM = 3.0
+	let lastZoomPosition = {x:0, y:0}
+	rlc.network.on("zoom",function(params){
+		let scale = rlc.network.getScale()
+		if(scale <= MIN_ZOOM )
+		{
+			rlc.network.moveTo({
+				position: lastZoomPosition,
+				scale: MIN_ZOOM
+			});
+		}
+		else if(scale >= MAX_ZOOM ){
+			rlc.network.moveTo({
+				position: lastZoomPosition,
+				scale: MAX_ZOOM,
+		   });
+		 }
+		 else{
+			lastZoomPosition = rlc.network.getViewPosition()
+		 }
+	});
+	rlc.network.on("dragEnd",function(params){
+		lastZoomPosition = rlc.network.getViewPosition()
+	});
+	
 }
 
 function getTasksByPhase (phase){

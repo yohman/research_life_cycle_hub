@@ -30,8 +30,7 @@
 
 
 <div class="container">
-	<!-- Nav bar -->
-	<!-- <nav class="navbar navbar-light bg-light"> -->
+	<!-- Top navigation bar -->
 	<nav class="navbar fixed-top navbar-light bg-light">
 		<div class="container">
 			<div class="row">
@@ -47,38 +46,34 @@
 					
 				</div>
 				<div class="col-2 align-self-center">
-					<a href="index.html">List</a> | <a href="map.html">Map</a>
+					<span style="cursor:pointer;" onclick="toggleContent()">List</span> | <span style="cursor:pointer;" onclick="toggleContent()">Map</span>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-8" ></div>
-				<div class="col-4"></div>
 			</div>
 		</div>
 	</nav>
-	<!-- 
+
+	<!-- content -->
 	<div class="row">
-		<div class="col-2 align-self-center">
-			<img src="../static/images/ucla.png" class="img-fluid">
-		</div>
-		<div class="col-10 align-self-center title">
-			Research Life Cycle
-		</div>
-	</div>
-	 -->
-	<div class="row">
+		<!-- main -->
 		<div class="col-8">
-			<h2 id="main-title"></h2>
-			<div id="main-content"></div>
+			<div id="main-content" ></div>
+			<div id="main-network" >
+				<div id="network-top">Instructions: Click on a node to zoom in and see supporting institutions.</div>
+				<div id="network-body"></div>
+			</div>
+			<div id="main-institute" ></div>
 		</div>
+		<!-- sidebar -->
 		<div class="col-4">
-			
 			<div id="side-content" class="make-me-sticky"></div>
 		</div>
 	</div>
 </div>
-<script></script>
+
+<!-- custom javascript -->
+<script type="text/javascript" src="../static/js/globals.js"></script>
 <script type="text/javascript" src="../static/js/main.js"></script>
+<script type="text/javascript" src="../static/js/map.js"></script>
 
 </body>
 </html>
