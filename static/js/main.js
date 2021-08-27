@@ -84,49 +84,76 @@ var rlc = {
 	}
 }
 
+
+
+
+
+/*
+
+	function to parse csv files
+
+*/ 
+function parseCsv(url, stepArr){
+	return new Promise(function(resolve, reject){
+		Papa.parse(url, {
+			download:true,
+			header:true,
+			complete: resolve       
+		});        
+	});
+}
+
 $(function() {
 	console.log('getting data...')
-	// get the data from multiple api requests first
-	// then start drawing the network map
-	$.when(
-		$.getJSON('/api/task',function(data){
-			$.each(data,function(i,val){
-				rlc.data.tasks.push(val)
-			})
-		}),
-		$.getJSON('/api/phase',function(data){
-			$.each(data,function(i,val){
-				rlc.data.phases.push(val)
-			})
-		}),
-		$.getJSON('/api/institute',function(data){
-			$.each(data,function(i,val){
-				rlc.data.institutes.push(val)
-			})
-		}),
-		$.getJSON('/api/institute2task',function(data){
-			$.each(data,function(i,val){
-				rlc.data.institute2task.push(val)
-			})
-		}),
 
-	).then(function() {
+	/*
 
-		// sort the data
-		// list.sort((a, b) => (a.color > b.color) ? 1 : -1)
-		rlc.data.phases.sort((a,b) => (a.order > b.order) ? 1 : -1)
-		rlc.data.tasks.sort((a,b) => (a.order > b.order) ? 1 : -1)
-		rlc.data.institutes.sort((a,b) => (a.acronym > b.acronym) ? 1 : -1)
-		// start by creating the nodes and edges
-		start()
+		list of data to parse
+
+	*/ 
+
+	const task = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vRBYB-vGl6QdGClfN4_VgK71bhiUoY21YA-Su9bsJqFOcD7_gv82L1UHW3M6Hcwqnz3018oNIS1zfbQ/pub?gid=393279233&single=true&output=csv')
+	const institute = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSZx8lTLKCD1kX-vSY-NTKQrtcCLqUMpW-BgTSO3sT4ZaEmC8jc1Uy1YO35xosWpGYTuIVRUB20bfU5/pub?gid=265372426&single=true&output=csv')
+	const phase = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSeME7cyJX0Z8VxhbOXgQwClHY1kpoxwFe6A1I4mLV8m7FtiZh9yJXL5HIrlH_KNzrcqMM8ItobTW-T/pub?output=csv')
+	const institute2task = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXFzxGeBGMpuHA4a6OxwJsyP14ckxZueMAJ4EAULBrCqKKB9urI9enKqTM3_qhtec6c3Z6MbcyfMc/pub?gid=1379978136&single=true&output=csv')
 
 
-	})
+	/*
 
+		put them in a promise to load all data before moving on to the next step
+
+	*/ 
+	console.log('start promise...')
+	var t0 = performance.now()
+	Promise.all(
+		// [geojsondata,csvdata,csvdata2,googledata]
+		[task,institute,phase,institute2task]
+	).then(
+		function(results){
+			var t1 = performance.now()
+			console.log("Call to get data took " + (t1 - t0) + " milliseconds.")
+			/*
+			
+				put the data in global variables
+			
+			*/ 
+			rlc.data.tasks = results[0].data
+			rlc.data.phases = results[1].data
+			rlc.data.institutes = results[2].data
+			rlc.data.institute2task = results[3].data
+
+			rlc.data.phases.sort((a,b) => (a.order > b.order) ? 1 : -1)
+			rlc.data.tasks.sort((a,b) => (a.order > b.order) ? 1 : -1)
+			rlc.data.institutes.sort((a,b) => (a.acronym > b.acronym) ? 1 : -1)
+
+			start();
+		}
+	)
 });
 
 function start()
 {
+	console.log('starting...')
 	// $('#main-title').html('Phases')
 	var html = ''
 
@@ -136,7 +163,8 @@ function start()
 			console.log(phase)
 
 		// first, append to the banner
-		$('#banner-section').append('<a href="#'+phase.name+'" class="economica">'+phase.name+rlc.icons.more_info+' </a>')
+		$('#banner-section').append(`<a class="badge" style="font-size:1.5em; color:white;background-color:${phase.color}" href="#${phase.name}" class="economica">${phase.name}${rlc.icons.more_info}</a> `)
+		// $('#banner-section').append('<a href="#'+phase.name+'" class="economica">'+phase.name+rlc.icons.more_info+' </a>')
 
 		html += '<a id="'+phase.name+'"></a><nav class="navbar navbar-light bg-light" style="background:'+phase.color+'"><span class="navbar-brand mb-0 h1">Phase '+(i+1)+': '+phase.name+'</span><small>'+phase.description+'</small></nav>'
 

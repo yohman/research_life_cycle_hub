@@ -79,36 +79,102 @@ var rlc = {
 	}
 }
 
+/*
+
+	function to parse csv files
+
+*/ 
+function parseCsv(url, stepArr){
+	return new Promise(function(resolve, reject){
+		Papa.parse(url, {
+			download:true,
+			header:true,
+			complete: resolve       
+		});        
+	});
+}
+
 $(function() {
+	console.log('getting data...')
 
-	// get the data from multiple api requests first
-	// then start drawing the network map
-	$.when(
-		$.getJSON('/api/task',function(data){
-			$.each(data,function(i,val){
-				rlc.data.tasks.push(val)
-			})
-		}),
-		$.getJSON('/api/phase',function(data){
-			$.each(data,function(i,val){
-				rlc.data.phases.push(val)
-			})
-		}),
-		$.getJSON('/api/institute2task',function(data){
-			$.each(data,function(i,val){
-				rlc.data.institute2task.push(val)
-			})
-		}),
+	/*
 
-	).then(function() {
-		// launch modal
-		$('#rlcmodal').modal('show')
-		// start by creating the nodes and edges
-		createNodesAndEdges()
+		list of data to parse
 
-	})
+	*/ 
 
+	const task = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vRBYB-vGl6QdGClfN4_VgK71bhiUoY21YA-Su9bsJqFOcD7_gv82L1UHW3M6Hcwqnz3018oNIS1zfbQ/pub?gid=393279233&single=true&output=csv')
+	const institute = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSZx8lTLKCD1kX-vSY-NTKQrtcCLqUMpW-BgTSO3sT4ZaEmC8jc1Uy1YO35xosWpGYTuIVRUB20bfU5/pub?gid=265372426&single=true&output=csv')
+	const phase = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSeME7cyJX0Z8VxhbOXgQwClHY1kpoxwFe6A1I4mLV8m7FtiZh9yJXL5HIrlH_KNzrcqMM8ItobTW-T/pub?output=csv')
+	const institute2task = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSXFzxGeBGMpuHA4a6OxwJsyP14ckxZueMAJ4EAULBrCqKKB9urI9enKqTM3_qhtec6c3Z6MbcyfMc/pub?gid=1379978136&single=true&output=csv')
+
+
+	/*
+
+		put them in a promise to load all data before moving on to the next step
+
+	*/ 
+	console.log('start promise...')
+	var t0 = performance.now()
+	Promise.all(
+		// [geojsondata,csvdata,csvdata2,googledata]
+		[task,institute,phase,institute2task]
+	).then(
+		function(results){
+			var t1 = performance.now()
+			console.log("Call to get data took " + (t1 - t0) + " milliseconds.")
+			/*
+			
+				put the data in global variables
+			
+			*/ 
+			rlc.data.tasks = results[0].data
+			rlc.data.phases = results[1].data
+			rlc.data.institutes = results[2].data
+			rlc.data.institute2task = results[3].data
+
+			rlc.data.phases.sort((a,b) => (a.order > b.order) ? 1 : -1)
+			rlc.data.tasks.sort((a,b) => (a.order > b.order) ? 1 : -1)
+			rlc.data.institutes.sort((a,b) => (a.acronym > b.acronym) ? 1 : -1)
+			// launch modal
+			// $('#rlcmodal').modal('show')
+			// start by creating the nodes and edges
+			createNodesAndEdges()
+
+		}
+	)
 });
+
+// $(function() {
+
+// 	// get the data from multiple api requests first
+// 	// then start drawing the network map
+// 	$.when(
+// 		$.getJSON('/api/task',function(data){
+// 			$.each(data,function(i,val){
+// 				rlc.data.tasks.push(val)
+// 			})
+// 		}),
+// 		$.getJSON('/api/phase',function(data){
+// 			$.each(data,function(i,val){
+// 				rlc.data.phases.push(val)
+// 			})
+// 		}),
+// 		$.getJSON('/api/institute2task',function(data){
+// 			$.each(data,function(i,val){
+// 				rlc.data.institute2task.push(val)
+// 			})
+// 		}),
+
+// 	).then(function() {
+// 		// launch modal
+// 		$('#rlcmodal').modal('show')
+// 		// start by creating the nodes and edges
+// 		createNodesAndEdges()
+
+// 	})
+
+// });
 
 function createNodesAndEdges()
 {
@@ -135,7 +201,7 @@ function createNodesAndEdges()
 				border: phase.color,
 				background: phase.color
 			},
-			title: '<h1>'+phase.name + '</h1><p>' + phase.description + '</p>'
+			title: '<h1>'+phase.name + '</h1><p-network>' + phase.description + '</p-network>'
 		}
 
 		// draw the arrow from the previous node to this phase
@@ -177,7 +243,7 @@ function createNodesAndEdges()
 			task.level = i+1
 			task.label = task.name
 			// task.label = task.id+' ' +task.name
-			task.title = '<h3>'+task.name + '</h3><p>' + task.description + '</p>'
+			task.title = '<h3-network>'+task.name + '</h3-network><p-network>' + task.description + '</p-network>'
 			task.color = {
 				border: phase.color.border,
 				background: 'white'
@@ -191,7 +257,7 @@ function createNodesAndEdges()
 			rlc.nodes.push(task)
 
 			// create the arrow from previous node to this task
-			console.log('create arrow from '+previous_node_id+' to '+task.id)
+			// console.log('create arrow from '+previous_node_id+' to '+task.id)
 			rlc.edges.push(
 				{
 					from: previous_node_id, 
@@ -285,9 +351,12 @@ function createNetwork(){
 }
 
 function getTasksByPhase (phase){
+	console.log(phase)
+	// get the id
+	id = rlc.data.phases.filter(item => item.name == phase)[0].id
 	var taskarray = []
 	$.each(rlc.data.tasks,function(i,val){
-		if(val.phase_id.name == phase)
+		if(val.phase_id == id)
 		{
 			taskarray.push(val)
 		}
@@ -298,15 +367,17 @@ function getTasksByPhase (phase){
 
 function addInstitutes2Task(taskid)
 {
+	console.log('adding institutes to task id ' + taskid)
 	// find institutes that support this task
 	var institute_array = []
 	$.each(rlc.data.institute2task,function(i,val){
-		if(val.task_id.id == taskid)
+		if(val.task_id == taskid)
 		{
 			institute_array.push(val)
 		}
 	})
 	console.log('number of institutes for this task: '+institute_array.length)
+	console.log(institute_array)
 	if(institute_array.length > 0) 
 	{
 
@@ -364,16 +435,21 @@ function addInstitutes2Task(taskid)
 				var thisy = y-Math.cos(total_radians)*radius
 			}
 
+			// find institute
+			this_institute = rlc.data.institutes.filter(item => item.id == institute.institute_id)[0]
+
+			console.log(this_institute)
 			institute = $.extend({}, institute,rlc.node_options.institute)
 
 			institute.id = institute_id_start+i
 			institute.x = thisx
 			institute.y = thisy
-			institute.label = institute.institute_id.acronym, 
-			institute.title = '<h3>'+institute.institute_id.name+'</h3><p>'+institute.institute_id.description+'</p>'
-			institute.color.border = institute.institute_id.color
-			institute.color.background = institute.institute_id.color
+			institute.label = this_institute.acronym, 
+			institute.title = '<h3-network>'+this_institute.name+'</h3-network><p-network>'+this_institute.description+'</p-network>'
+			institute.color.border = this_institute.color
+			institute.color.background = this_institute.color
 
+			console.log(institute)
 			rlc.data.nodes.add(institute)
 
 			// rlc.data.nodes.add(
@@ -384,7 +460,7 @@ function addInstitutes2Task(taskid)
 			// 		x: 				thisx, 
 			// 		y: 				thisy, 
 			// 		label: 			institute.institute_id.acronym, 
-			// 		title: 			'<h3>'+institute.institute_id.name+'</h3><p>'+institute.institute_id.description+'</p>', 
+			// 		title: 			'<h3-network>'+institute.institute_id.name+'</h3-network><p>'+institute.institute_id.description+'</p>', 
 			// 		borderWidth: 	2,
 			// 		color:{border: 	'white',
 			// 		background: 	'darkblue'}, 

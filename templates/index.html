@@ -19,6 +19,7 @@
 
 	<!-- visjs -->
 	<script type="text/javascript" src="../static/js/vis.js"></script>
+	<script type="text/javascript" src="../static/js/papaparse.min.js"></script>
 
 	<!-- inhouse css -->
 	<link href="../static/css/styles.css" rel="stylesheet" type="text/css"/>
@@ -28,13 +29,10 @@
 <body>
 
 
-
-
-
 <div class="container">
 	<!-- Nav bar -->
 	<!-- <nav class="navbar navbar-light bg-light"> -->
-	<nav class="navbar sticky-top navbar-light bg-light">
+	<nav class="navbar fixed-top navbar-light bg-light">
 		<div class="container">
 			<div class="row">
 				<div class="col-2 align-self-center">
@@ -44,21 +42,17 @@
 					Research Life Cycle
 				</div>
 			</div>
-			<!--
-			<div class="row">
-				<div class="col-12">
-					<div class="navbar-nav">
-						<a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-						<a class="nav-link" href="#">Features</a>
-						<a class="nav-link" href="#">Pricing</a>
-						<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-					</div>
+			<div class="row" style="width:100%">
+				<div class="col-10 align-self-center " id="banner-section">
+					
+				</div>
+				<div class="col-2 align-self-center">
+					<a href="index.html">List</a> | <a href="map.html">Map</a>
 				</div>
 			</div>
-			-->
 			<div class="row">
-
-				<div id="banner-section" class="col-12"></div>
+				<div class="col-8" ></div>
+				<div class="col-4"></div>
 			</div>
 		</div>
 	</nav>
@@ -79,7 +73,7 @@
 		</div>
 		<div class="col-4">
 			
-			<div id="side-content"></div>
+			<div id="side-content" class="make-me-sticky"></div>
 		</div>
 	</div>
 </div>

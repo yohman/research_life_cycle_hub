@@ -5,15 +5,40 @@ body, html {
 body {
 	color: #222;
 	font: 1.2em Mate;
+    padding-top: 150px;
 	/*background-color: #222222;*/
     /*background-color: #dedede;*/
 }
+html {
+    scroll-behavior: smooth;
+}
+:target:before {
+    content: "";
+    display: block;
+    height: 180px;
+    margin: -100px 0 0;
+}
 
+.make-me-sticky {
+    position: -webkit-sticky;
+      position: sticky;
+      top: 160px;
+      
+    padding: 0 15px;
+  }
+  
 p {
-    color: #444;
-    font: .7em Mate;
+    color: rgb(91, 91, 91);
+    font: 0.8em Mate;
     margin-top: 1rem;
 }
+
+p-network {
+    color: rgb(203, 203, 203);
+    font: 1.2em Mate;
+    margin-top: 1rem;
+}
+
 #mynetwork {
 	width: 100%; height: 100%;
 	/*border: 1px solid #444444;*/
@@ -28,7 +53,7 @@ p {
 .title {
 	font-family: Economica;
 	/*color: #fff;*/
-    font-size:2em;
+    font-size:3em;
 	font-weight: 400;
 }
 
@@ -45,8 +70,14 @@ h1,.h1 {
 
 h3 {
     font-family: Economica;
-    /*color: #fff;*/
-    font-size:1em;
+    color: rgb(34, 34, 34);
+    font-size:2em;
+    font-weight: 400;
+}
+h3-network {
+    font-family: Economica;
+    color: #fff;
+    font-size:2em;
     font-weight: 400;
 }
 

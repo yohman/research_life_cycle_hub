@@ -1,0 +1,49 @@
+created_at,description,id,name,order,phase_id
+2020-02-18 16:36:00+00:00,,9,Project management guidance,900,1
+2020-02-18 16:36:00+00:00,"Support for transitioning an idea into a research project. Scoping a research  project often requires considerations in feasibility, methods, tools, data, analysis, delivery, and preservation strategies. 
+",1,Project concept & scoping,100,1
+2020-02-18 16:36:00+00:00,"A literature review is usually the first step in addressing a research topic. It provides context, relevance, background to a research question, and critically analyzes gaps that need to be worked on.  It can also provide context for commonly used methods, tools, and standards set by the researcher’s field of study.
+",3,Literature review & landscape scan,300,1
+2020-02-18 16:36:00+00:00,"With a research scope identified, methodologies may require the knowledge and mastery on certain digital tools. Targeted workshops and trainings on specific digital approaches can provide the necessary acquisition of knowledge that can enable the research being conducted.
+",4,Workshops & trainings,400,1
+2020-02-18 16:36:00+00:00,"Assessing the tools and best practices that support your research process strengthens and accelerates the research being conducted. 
+",5,Tools & best practices,500,1
+2020-02-18 16:36:00+00:00,"Organizing your data is critical in order to create robust and reproducible computational analyses on raw data. This enables forecasting of trends, modeling and data visualization. 
+",6,Data models & structures,600,1
+2020-02-18 16:36:00+00:00,"Research projects are inherently experimental in nature, aimed at investigating new ideas, especially in the early phases of development. Demonstrating the feasibility of an intended research is often a critical step to advance a project forward. 
+",7,Prototyping,700,1
+2020-02-18 16:36:00+00:00,"UCLA encourages the ethical use of data and highlights the importance in complying with best practices when using sensitive data like that collected from human subjects or related to health. 
+",8,"Ethics, compliance & security",800,1
+2020-02-18 16:36:00+00:00,"Planning for and obtaining funding is a critical part of building a research program. Researchers can find support through the OVCR,  OCGR for the grant planning and submission process. 
+",10,Grant proposal development,100,2
+2020-02-18 16:36:00+00:00,"Funders and institutions around the world are requiring researchers to submit documents outlining data management plans. These plans include a description of the data produced in the study, identification of community standards around data usage, along with short- and long-term storage strategies for the data produced from funded research.  The Data Science Center, IDRE, Peers, and Subject librarians provide support for preparing these plans.
+",11,Data management plan,200,2
+2020-02-18 16:36:00+00:00,"Research studies accumulate data from a variety of sources. Researchers might mine publicly available data, licence a proprietary data set, or collect their own data. The Data Science Center, IDRE and XXXXX provide support for collecting and manipulating data sets for computational studies.
+",12,Data collection & manipulation,300,2
+2020-02-18 16:36:00+00:00,"Large data sets sometimes require powerful computation in order to analyze and visualize large volumes of information. The UCLA Hoffman Cluster is a high-performance computing resource available to trained researchers in order to perform these types of analysis. The Data Science Center, IDRE and XXXXX provide support and training to use the UCLA Hoffman Cluster.
+",13,Advanced computation,400,2
+2020-02-18 16:36:00+00:00,"Statistical analyses are an integral part of testing the validity of hypotheses and identifying true differences between groups of data measurements. IDRE and XXXXX provide support for constructing studies appropriately so they can be statistically evaluated and consultation services so researchers can apply the correct statistical test for the reserach in question. 
+",14,Statistical analysis,500,2
+2020-02-18 16:36:00+00:00,"Moderate and large data sets are difficult to interpret and read in traditional tabular formats. Strategies for compelling data visualization are instrumental when presenting data to support research hypotheses. The Data Science Center, IDRE and XXXXX provide support and training in data visualization strategies. 
+",15,Data visualization,600,2
+2020-02-18 16:36:00+00:00,"Web scraping, and large scale text analysis are common tools used to efficiently analyze scholarly literature. The Data Science Center, Subject Librarians and XXXXX provide guidance for appropriate use of text and data mining in research.
+",18,Text analysis,900,2
+2020-02-18 16:36:00+00:00,"A diverse array of subject-specific and general-purpose digital repositories exist to support the preservation and longevity of research data as well as provide access to datasets. Support for identifying appropriate repositories for deposit and guides to preparing your data to facilitate reproducibility and reuse can be found at XXXXX and XXXXXX.
+",24,Digital repository,300,4
+,"Publishing of scholarly content requires critical evaluation of who will own the copyright of the content produced through the research process (the researcher, the university or the publisher). Scholarly communication and subject librarians can help identify ways to empower researchers and help researchers comply with changing funder policies around accessibility and reuse of research and data.
+",19,Copyright & permissions,100,3
+2020-02-18 16:36:00+00:00,"Certain research projects are most efficiently communicated through the development of websites. Support for web development and hosting can be found via XXXXX and XXXXX.
+",20,Web development & hosting,200,3
+2020-02-18 16:36:00+00:00,,22,Publishing,400,3
+2020-02-18 16:36:00+00:00,,23,Project maintenance,200,4
+2020-02-18 16:36:00+00:00,,25,Data archive & preservation,400,4
+2020-02-18 16:36:00+00:00,,26,Data curation,500,4
+2020-02-18 16:36:00+00:00,,27,Licensing & IP,600,4
+2020-02-18 16:36:00+00:00,"Most research data has or can have a spatial component to it. Mapping data for visual and analytical discovery can be instrumental methodological approaches to advance and validate research inquiries. The Data Science Center, IDRE, and the Library offer support for GIS training and workshops, consultations, and software licensing.",16,GIS & mapping,700,2
+2020-02-18 16:36:00+00:00,"A number of resources exist that support the development of virtual reality, augmented reality, 3D scanning/printing and modeling experimentation. Support can be found through IDRE, the Data Science Center and the Lux Lab
+",17,Advanced Digital Technology,800,2
+2020-02-18 16:36:00+00:00,"Grant funding often requires the development of reports summarizing the conclusions of work produced from the grant money. Support for producing these reports can be found with OVCR, OCGA, subject librarians and peers.
+",28,Grant conclusion,700,4
+2020-02-18 16:36:00+00:00, Securing research funds,2,Funding,200,1
+2020-02-18 16:36:00+00:00,"Research funders are increasingly requiring that publications and data generated from the funding be openly accessible through data or manuscript repositories. UCLA provides support for best practices in open access publishing through scholarly communication and subject librarians.
+",21,Open access,300,3
