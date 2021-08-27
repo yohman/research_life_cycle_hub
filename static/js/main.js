@@ -80,7 +80,7 @@ var rlc = {
 		},
 	},
 	icons: {
-		more_info: ' <svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-info-circle-fill" fill="#ccc" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-8.354 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.793 7.5H5a.5.5 0 0 0 0 1h4.793l-2.147 2.146z"/></svg>'
+		more_info: ' <svg width=".8em" height=".8em" viewBox="0 0 16 16" class="bi bi-info-circle-fill" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-8.354 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.793 7.5H5a.5.5 0 0 0 0 1h4.793l-2.147 2.146z"/></svg>'
 	}
 }
 
@@ -163,7 +163,7 @@ function start()
 			console.log(phase)
 
 		// first, append to the banner
-		$('#banner-section').append(`<a class="badge" style="font-size:1.5em; color:white;background-color:${phase.color}" href="#${phase.name}" class="economica">${phase.name}${rlc.icons.more_info}</a> `)
+		$('#banner-section').append(`<a class="badge" style="font-size:1.2em; color:white;background-color:${phase.color}" href="#${phase.name}" class="economica">${phase.name}${rlc.icons.more_info}</a> `)
 		// $('#banner-section').append('<a href="#'+phase.name+'" class="economica">'+phase.name+rlc.icons.more_info+' </a>')
 
 		html += '<a id="'+phase.name+'"></a><nav class="navbar navbar-light bg-light" style="background:'+phase.color+'"><span class="navbar-brand mb-0 h1">Phase '+(i+1)+': '+phase.name+'</span><small>'+phase.description+'</small></nav>'

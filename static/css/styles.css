@@ -66,12 +66,13 @@ p-network {
 }
 h1,.h1 {
     font-family: Economica;
+    font-size: 1.5em;
 }
 
 h3 {
     font-family: Economica;
     color: rgb(34, 34, 34);
-    font-size:2em;
+    font-size:1.2em;
     font-weight: 400;
 }
 h3-network {
