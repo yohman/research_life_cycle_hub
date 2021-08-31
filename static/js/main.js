@@ -13,15 +13,51 @@ function start()
 	createSidebar();
 	createMainContent();
 	createNetworkMap();
-	$('#main-network').hide()
-	$('#main-content').show()
+	
+	toggleContent('home')
 }
 
-function toggleContent()
+function toggleContent(content)
 {
-	$('#main-network').toggle()
-	$('#main-content').toggle()
-	rlc.network.fit()
+	console.log(content)
+	switch(content){
+		case 'home':
+			console.log('main here')
+			$('#main-home').show()
+			$('#main-list').hide()
+			$('#main-network').hide()
+			$('#main-institute').hide()
+			$('#side-content').hide()
+			break;
+		
+		case 'list':
+			console.log('main here')
+			$('#main-home').hide()
+			$('#main-list').show()
+			$('#main-network').hide()
+			$('#main-institute').hide()
+			$('#side-content').show()
+			break;
+		
+		case 'network':
+			console.log('network here')
+			$('#main-home').hide()
+			$('#main-list').hide()
+			$('#main-network').show()
+			$('#main-institute').hide()
+			$('#side-content').hide()
+			rlc.network.fit()
+			break;
+
+		case 'institute':
+			$('#main-home').hide()
+			$('#main-list').hide()
+			$('#main-network').hide()
+			$('#main-institute').show()
+			$('#side-content').show()
+			break;
+
+	}
 }
 
 function createMainContent(){
@@ -58,7 +94,7 @@ function createMainContent(){
 		html += '</table>'
 	})
 
-	$('#main-content').html(html)
+	$('#main-list').html(html)
 }
 function createSidebar(){
 
@@ -481,8 +517,9 @@ function showModal(){
 
 function showInstitute(id){
 	// hide other stuff
-	$('#main-network').hide()
-	$('#main-content').hide()
+	toggleContent('institute')
+	// $('#main-network').hide()
+	// $('#main-list').hide()
 	
 	institute = getInstituteByInstituteID(id)
 	console.log(institute)
