@@ -27,6 +27,7 @@ function toggleContent(content)
 			$('#main-list').hide()
 			$('#main-network').hide()
 			$('#main-institute').hide()
+			$('#main-task').hide()
 			$('#side-content').hide()
 			break;
 		
@@ -36,6 +37,7 @@ function toggleContent(content)
 			$('#main-list').show()
 			$('#main-network').hide()
 			$('#main-institute').hide()
+			$('#main-task').hide()
 			$('#side-content').show()
 			break;
 		
@@ -45,6 +47,7 @@ function toggleContent(content)
 			$('#main-list').hide()
 			$('#main-network').show()
 			$('#main-institute').hide()
+			$('#main-task').hide()
 			$('#side-content').hide()
 			rlc.network.fit()
 			break;
@@ -54,6 +57,16 @@ function toggleContent(content)
 			$('#main-list').hide()
 			$('#main-network').hide()
 			$('#main-institute').show()
+			$('#main-task').hide()
+			$('#side-content').show()
+			break;
+
+		case 'task':
+			$('#main-home').hide()
+			$('#main-list').hide()
+			$('#main-network').hide()
+			$('#main-institute').hide()
+			$('#main-task').show()
 			$('#side-content').show()
 			break;
 
@@ -98,13 +111,13 @@ function createMainContent(){
 }
 function createSidebar(){
 
-	var sidehtml = '<h3>Supporting Institutes</h3>'
+	var sidehtml = '<h3>Supporting Entities</h3>'
 	sidehtml += '<table class="table ">'
 	$.each(rlc.data.institutes,function(i,val){
 		institute = getInstituteByInstituteID(val.id)
 		sidehtml += '<tr><td>'
-		sidehtml += `<a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:${institute.color}">${institute.acronym}</a></td>`
-		sidehtml += `<td style="font-size:.8em">${institute.name}${rlc.icons.more_info}</td></tr>`
+		sidehtml += `<a href="#" class="badge badge-primary" onclick="createInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a></td>`
+		sidehtml += `<td style="font-size:.8em">${val.name}${rlc.icons.more_info}</td></tr>`
 
 	})
 	sidehtml += '</table>'
@@ -515,9 +528,53 @@ function showModal(){
 
 ***************************** */ 
 
-function showInstitute(id){
+function createInstitute(id){
 	// hide other stuff
 	toggleContent('institute')
+	// $('#main-network').hide()
+	// $('#main-list').hide()
+	
+	institute = getInstituteByInstituteID(id)
+	console.log(institute)
+	html = '';
+
+	html += `<span class="badge badge-primary" style="font-weight: 400;background-color:${institute.color}">${institute.acronym}</span><h1>${institute.name}</h1><small>${institute.url}</small><p>${institute.description}</p>`
+
+	tasks = getTasksByInstituteID(id);
+
+	// table option
+	html += '<table class="table">'
+	$.each(tasks,function(j,task){
+		// what phase?
+		var phase = rlc.data.phases.filter(item => item.id == task.phase_id)[0]
+		var institutes = getInstitutesByTaskID(task.id)
+		html += '<tr>'
+		html += '<td><div class="circle-small" style="background:'+phase.color+'">'+phase.name+'</div><div class="vl" style="color:'+institute.color+'"></div></td>'
+		html += '<td><h3>'+task.name
+		html += rlc.icons.more_info+'</h3>'
+		html += '<p>'+task.description+'</p>'
+		// html += '</td>'
+		$.each(institutes,function(k,institute){
+			thisinstitute = getInstituteByInstituteID(institute.institute_id)
+			html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
+		})
+		html += '</td>'
+		html += '</tr>'
+	})
+	html += '</table>'
+
+	$('#main-institute').html(html)
+}
+
+/* **************************** 
+
+	Task
+
+***************************** */ 
+
+function createTask(id){
+	// hide other stuff
+	toggleContent('task')
 	// $('#main-network').hide()
 	// $('#main-list').hide()
 	

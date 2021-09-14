@@ -126,6 +126,7 @@ function getData(){
 
 	*/ 
 
+	const test = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vTBh6M3_gGIf4wBSRtdbXZaSnKKVm-jJv05OaQ4Y7Gw5Mw4qXFsMReIJ1Wth0iJZfx6bIwPnk4BvrFs/pub?output=csv')
 	const task = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vRBYB-vGl6QdGClfN4_VgK71bhiUoY21YA-Su9bsJqFOcD7_gv82L1UHW3M6Hcwqnz3018oNIS1zfbQ/pub?gid=393279233&single=true&output=csv')
 	const institute = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSZx8lTLKCD1kX-vSY-NTKQrtcCLqUMpW-BgTSO3sT4ZaEmC8jc1Uy1YO35xosWpGYTuIVRUB20bfU5/pub?gid=265372426&single=true&output=csv')
 	const phase = parseCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSeME7cyJX0Z8VxhbOXgQwClHY1kpoxwFe6A1I4mLV8m7FtiZh9yJXL5HIrlH_KNzrcqMM8ItobTW-T/pub?output=csv')
@@ -141,7 +142,7 @@ function getData(){
 	var t0 = performance.now()
 
 	Promise.all(
-		[task,institute,phase,institute2task]
+		[task,institute,phase,institute2task,test]
 	).then(
 		function(results){
 			var t1 = performance.now()
@@ -155,6 +156,7 @@ function getData(){
 			rlc.data.phases = results[1].data
 			rlc.data.institutes = results[2].data
 			rlc.data.institute2task = results[3].data
+			rlc.data.test = results[4].data
 
 			rlc.data.phases.sort((a,b) => (a.order > b.order) ? 1 : -1)
 			rlc.data.tasks.sort((a,b) => (a.order > b.order) ? 1 : -1)
