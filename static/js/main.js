@@ -106,7 +106,7 @@ function showList(){
 					<p>${phase.description}</p>
 				</div>
 				<div class="col-4">
-					<img src="../static/images/${phase.name}.png" width=100%>
+					<img src="../static/images/${phase.name.toLowerCase()}.png" width=100%>
 				</div>
 			</div>
 			`
