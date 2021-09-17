@@ -11,10 +11,10 @@ function start()
 	
 
 	createSidebar();
-	createMainContent();
+	showList();
 	createNetworkMap();
 	
-	toggleContent('home')
+	toggleContent('list')
 }
 
 function toggleContent(content)
@@ -73,38 +73,105 @@ function toggleContent(content)
 	}
 }
 
-function createMainContent(){
+function showList(){
+
+	// clear
 	var html = ''
 	$('#banner-section').empty()
-	// loop through each phase
+
+	/*
+	
+		loop through each phase
+	
+	*/ 
 	$.each(rlc.data.phases,function(i,phase){
 		var tasks = getTasksByPhaseID(phase.id)
 			console.log(phase)
 
 		// first, append to the banner
-		$('#banner-section').append(`<a class="badge" style="font-size:1.2em; color:white;background-color:${phase.color}" href="#${phase.name}" class="economica">${phase.name}${rlc.icons.more_info}</a> `)
+		$('#banner-section').append(`<a class="badge" style="font-size:0.8em; color:white;background-color:${phase.color}" href="#${phase.name}" class="economica">${phase.name}${rlc.icons.more_info}</a> `)
 		// $('#banner-section').append('<a href="#'+phase.name+'" class="economica">'+phase.name+rlc.icons.more_info+' </a>')
 
-		html += '<a id="'+phase.name+'"></a><nav class="navbar navbar-light bg-light" style="background:'+phase.color+'"><span class="navbar-brand mb-0 h1">Phase '+(i+1)+': '+phase.name+'</span><small>'+phase.description+'</small></nav>'
+		/*
+		
+			Phase name and description
+		
+		*/ 
+		html += `<a id="${phase.name}"></a>
+			<div class="row" style="width:100%">
+				<div class="col-8">
+					<h1>
+						Phase ${(i+1)}: ${phase.name}
+					</h1>
+					<p>${phase.description}</p>
+				</div>
+				<div class="col-4">
+					<img src="../static/images/${phase.name}.png" width=100%>
+				</div>
+			</div>
+			`
 
-		// table option
-		html += '<table class="table">'
+		/*
+		
+			Tasks within this phase
+		
+		*/ 
+
+		// start accordion
+		html += `
+		<div class="accordion">
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="heading${phase.name}">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${phase.name}" aria-expanded="true" aria-controls="collapse${phase.name}">
+					Show tasks for this phase
+				</button>
+				</h2>
+				
+				<div id="collapse${phase.name}" class="accordion-collapse collapse" aria-labelledby="heading${phase.name}" data-bs-parent="#accordionExample">
+				<div class="accordion-body">
+		`
+
+
 		$.each(tasks,function(j,task){
 			var institutes = getInstitutesByTaskID(task.id)
-			html += '<tr>'
-			html += '<td><div class="circle" style="background:'+phase.color+'">'+(j+1)+'</div><div class="vl" style="color:'+phase.color+'"></div></td>'
-			html += '<td><h3>'+task.name
-			html += rlc.icons.more_info+'</h3>'
-			html += '<p>'+task.description+'</p>'
-			// html += '</td>'
+
+			html_institutes = '';
 			$.each(institutes,function(k,institute){
 				thisinstitute = getInstituteByInstituteID(institute.institute_id)
-				html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
+				html_institutes += `<a href="#" class="badge badge-primary" onclick="showInstitute(${institute.institute_id})" style="font-weight: 400;background-color:${thisinstitute.color}">${thisinstitute.acronym}</a> `
+				// <a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a>
 			})
-			html += '</td>'
-			html += '</tr>'
+
+			html += `
+			<div class="row" style="width:100%">
+				<div class="col-1">
+					
+					<div class="circle" style="background:${phase.color}">${(j+1)}</div>
+					
+				</div>
+				<div class="col-11">
+					<div class="card">
+						<h5 class="card-header">
+						${task.name}
+						</h5>
+						<div class="card-body">
+							<p class="card-text">${task.description}</p>
+							${html_institutes}
+						</div>
+					</div>
+				</div>
+			</div>
+			`
 		})
-		html += '</table>'
+		// end accordion
+		html += `			
+				</div>
+				</div>
+			</div>
+
+		</div>
+		`
+
 	})
 
 	$('#main-list').html(html)
@@ -113,10 +180,14 @@ function createSidebar(){
 
 	var sidehtml = '<h3>Supporting Entities</h3>'
 	sidehtml += '<table class="table ">'
-	$.each(rlc.data.institutes,function(i,val){
+
+	// only show parents
+	var parent_institutes = rlc.data.institutes.filter(item=>item.parent_id == '')
+
+	$.each(parent_institutes,function(i,val){
 		institute = getInstituteByInstituteID(val.id)
 		sidehtml += '<tr><td>'
-		sidehtml += `<a href="#" class="badge badge-primary" onclick="createInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a></td>`
+		sidehtml += `<a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a></td>`
 		sidehtml += `<td style="font-size:.8em">${val.name}${rlc.icons.more_info}</td></tr>`
 
 	})
@@ -528,7 +599,7 @@ function showModal(){
 
 ***************************** */ 
 
-function createInstitute(id){
+function showInstitute(id){
 	// hide other stuff
 	toggleContent('institute')
 	// $('#main-network').hide()
@@ -540,9 +611,31 @@ function createInstitute(id){
 
 	html += `<span class="badge badge-primary" style="font-weight: 400;background-color:${institute.color}">${institute.acronym}</span><h1>${institute.name}</h1><small>${institute.url}</small><p>${institute.description}</p>`
 
+	/*
+	
+		show children
+	
+	*/ 
+
+	var children = rlc.data.institutes.filter(item=>item.parent_id == id)
+
+	if(children.length>0){
+		html += '<h2>Sub-units</h2>';
+		children.forEach(element => {
+			// html += `<span class="badge badge-primary" style="font-weight: 400;background-color:${element.color}">${element.acronym}</span>`
+			html += `<h3>${element.name}</h3><small>${element.url}</small><p>${element.description}</p>`
+		});
+	}
+
+	/*
+	
+		show tasks
+	
+	*/ 
 	tasks = getTasksByInstituteID(id);
 
 	// table option
+	html += '<h2>Supported tasks</h2>'
 	html += '<table class="table">'
 	$.each(tasks,function(j,task){
 		// what phase?

@@ -155,6 +155,7 @@ function getData(){
 			rlc.data.tasks = results[0].data
 			rlc.data.phases = results[1].data
 			rlc.data.institutes = results[2].data
+			// rlc.data.institutes = results[2].data.filter(item=>item.parent_id == '')
 			rlc.data.institute2task = results[3].data
 			rlc.data.test = results[4].data
 

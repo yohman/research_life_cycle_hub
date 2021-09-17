@@ -68,11 +68,18 @@ h1,.h1 {
     font-family: Economica;
     font-size: 1.5em;
 }
+h2,.h2 {
+    border-top: 1px solid silver;
+    border-bottom: 1px solid silver;
+    font-family: Economica;
+    font-size: 1.2em;
+    padding: 5px;
+    background: #eee;}
 
 h3 {
     font-family: Economica;
     color: rgb(34, 34, 34);
-    font-size:1.2em;
+    font-size:1.1em;
     font-weight: 400;
 }
 h3-network {
