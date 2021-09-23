@@ -648,7 +648,8 @@ function showInstitute(id){
 		// html += '</td>'
 		$.each(institutes,function(k,institute){
 			thisinstitute = getInstituteByInstituteID(institute.institute_id)
-			html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
+			html += `<a href="#" class="badge badge-primary" onclick="showInstitute(${thisinstitute.id})" style="font-weight: 400;background-color:${thisinstitute.color}">${thisinstitute.acronym}</a> `
+			// html += '<a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
 		})
 		html += '</td>'
 		html += '</tr>'
