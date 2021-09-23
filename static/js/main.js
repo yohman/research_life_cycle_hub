@@ -106,6 +106,7 @@ function showList(){
 					<p>${phase.description}</p>
 				</div>
 				<div class="col-4">
+					<br><br>
 					<img src="../static/images/${phase.name.toLowerCase()}.png" width=100%>
 				</div>
 			</div>
@@ -150,17 +151,14 @@ function showList(){
 					
 				</div>
 				<div class="col-11">
-					<div class="card">
 						<h5 class="card-header">
 						${task.name}
 						</h5>
-						<div class="card-body">
 							<p class="card-text">${task.description}</p>
 							${html_institutes}
-						</div>
-					</div>
 				</div>
 			</div>
+			<br>
 			`
 		})
 		// end accordion
@@ -170,6 +168,7 @@ function showList(){
 			</div>
 
 		</div>
+		<br>
 		`
 
 	})
