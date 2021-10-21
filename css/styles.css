@@ -51,39 +51,39 @@ p-network {
 }
 
 .title {
-	font-family: Economica;
+	/* font-family: Economica; */
 	/*color: #fff;*/
     font-size:3em;
 	font-weight: 400;
 }
 
 .economica {
-    font-family: Economica;
+    /* font-family: Economica; */
 }
 
 .row {
     margin-top: 10px;
 }
 h1,.h1 {
-    font-family: Economica;
+    /* font-family: Economica; */
     font-size: 1.5em;
 }
 h2,.h2 {
     border-top: 1px solid silver;
     border-bottom: 1px solid silver;
-    font-family: Economica;
+    /* font-family: Economica; */
     font-size: 1.2em;
     padding: 5px;
     background: #eee;}
 
 h3 {
-    font-family: Economica;
+    /* font-family: Economica; */
     color: rgb(34, 34, 34);
     font-size:1.1em;
     font-weight: 400;
 }
 h3-network {
-    font-family: Economica;
+    /* font-family: Economica; */
     color: #fff;
     font-size:2em;
     font-weight: 400;
@@ -98,7 +98,7 @@ h3-network {
     border: 3px solid #fff;
     color: #fff;
     text-align: center;
-    font: 28px Economica, sans-serif;
+    /* font: 28px Economica, sans-serif; */
 }
 
 .circle-small {

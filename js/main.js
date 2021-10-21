@@ -100,15 +100,55 @@ function showList(){
 		html += `<a id="${phase.name}"></a>
 			<div class="row" style="width:100%">
 				<div class="col-8">
-					<h1>
+					<h1 class="display-4">
 						Phase ${(i+1)}: ${phase.name}
 					</h1>
-					<p>${phase.description}</p>
+					<!--- <p>${phase.description}</p> --->
+			`
+
+
+
+
+		$.each(tasks,function(j,task){
+			var institutes = getInstitutesByTaskID(task.id)
+
+			html_institutes = '';
+			$.each(institutes,function(k,institute){
+				thisinstitute = getInstituteByInstituteID(institute.institute_id)
+				html_institutes += `<a href="#" class="badge badge-primary" onclick="showInstitute(${institute.institute_id})" style="font-weight: 400;background-color:${thisinstitute.color}">${thisinstitute.acronym}</a> `
+				// <a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a>
+			})
+
+			html += `
+			<div class="row" style="width:100%">
+				<div class="col-1">
+					
+					<div class="circle" style="background:${phase.color}">${(j+1)}</div>
+					
 				</div>
+				<div class="col-11">
+						<h5 class="" style="margin-top:9px">
+						${task.name}
+						</h5>
+							<p class="card-text">${task.description}</p>
+							${html_institutes}
+				</div>
+			</div>
+			<br>
+			`
+		})
+
+		html += `
+
+
+
+				</div>
+				<!---
 				<div class="col-4">
 					<br><br>
-					<img src="../static/images/${phase.name.toLowerCase()}.png" width=100%>
+					<img src="images/${phase.name.toLowerCase()}.png" width=100%>
 				</div>
+				--->
 			</div>
 			`
 
@@ -119,7 +159,8 @@ function showList(){
 		*/ 
 
 		// start accordion
-		html += `
+		html2 = ''
+		html2 += `
 		<div class="accordion">
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="heading${phase.name}">
@@ -143,7 +184,7 @@ function showList(){
 				// <a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a>
 			})
 
-			html += `
+			html2 += `
 			<div class="row" style="width:100%">
 				<div class="col-1">
 					
@@ -162,7 +203,7 @@ function showList(){
 			`
 		})
 		// end accordion
-		html += `			
+		html2 += `			
 				</div>
 				</div>
 			</div>
@@ -255,7 +296,7 @@ function createNodesAndEdges()
 {
 	// Idea logo
 	rlc.nodes.push(
-			{id: 'idea', level: 0, group: 100, image: '../static/images/idea.png', shape: 'image', size: 100,  x: -450, y: 100, font:{color:'#ffffff'}},)
+			{id: 'idea', level: 0, group: 100, image: 'images/idea.png', shape: 'image', size: 100,  x: -450, y: 100, font:{color:'#ffffff'}},)
 
 	previous_node_id = 'idea'
 
@@ -608,7 +649,7 @@ function showInstitute(id){
 	console.log(institute)
 	html = '';
 
-	html += `<span class="badge badge-primary" style="font-weight: 400;background-color:${institute.color}">${institute.acronym}</span><h1>${institute.name}</h1><small>${institute.url}</small><p>${institute.description}</p>`
+	html += `<span class="badge badge-primary" style="font-weight: 400;background-color:${institute.color}">${institute.acronym}</span><h1 class="display-4">${institute.name}</h1><small>${institute.url}</small><p>${institute.description}</p>`
 
 	/*
 	
