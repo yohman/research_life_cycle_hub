@@ -19,6 +19,29 @@ html {
     margin: -100px 0 0;
 }
 
+a {
+    text-decoration: none;
+
+}
+
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.line {
+    height: 33px;
+    width: 10px;
+    background-color: #bbb;
+    /* border-radius: 50%; */
+    display: inline-block;
+    margin-bottom: -15px;
+    margin-right: 20px;
+  }
+
 .make-me-sticky {
     position: -webkit-sticky;
       position: sticky;
@@ -90,12 +113,13 @@ h3-network {
 }
 
 .circle {
+    margin-top: 10px;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     padding: 0px;
-    background: #fff;
-    border: 3px solid #fff;
+    background: #555;
+    /* border: 3px solid #fff; */
     color: #fff;
     text-align: center;
     /* font: 28px Economica, sans-serif; */
@@ -146,3 +170,30 @@ div.vis-tooltip {
 .modal-body {
     background-color: #222222;
 }
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+  
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }

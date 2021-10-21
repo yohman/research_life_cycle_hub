@@ -11,10 +11,11 @@ function start()
 	
 
 	createSidebar();
-	showList();
+	showList2();
 	createNetworkMap();
 	
 	toggleContent('list')
+	$('[data-toggle="tooltip"]').tooltip()
 }
 
 function toggleContent(content)
@@ -72,7 +73,71 @@ function toggleContent(content)
 
 	}
 }
+function showList2(){
 
+	// clear
+	$('#banner-section').empty()
+	var html = '<div class="row" style="width:100%">'
+
+	/*
+	
+		loop through each phase
+	
+	*/ 
+	$.each(rlc.data.phases,function(i,phase){
+		var tasks = getTasksByPhaseID(phase.id)
+
+		/*
+		
+			Phase name and description
+		
+		*/ 
+		html += `
+			<div class="col-3">
+				<span class="text-muted" style="font-size:0.8em">Phase ${(i+1)}</span>
+				<div class="h3">
+					${phase.name}
+				</div>
+			`
+
+			$.each(tasks,function(j,task){
+				var institutes = getInstitutesByTaskID(task.id)
+
+				html_institutes = '';
+				$.each(institutes,function(k,institute){
+					thisinstitute = getInstituteByInstituteID(institute.institute_id)
+					html_institutes += `<span class="dot" title="${thisinstitute.acronym}" data-toggle="tooltip" onclick="showInstitute(${institute.institute_id})" style="background-color:${thisinstitute.color}"></span> `
+				})
+
+				html += `
+				<div class="row card" style="width:100%;background-color:gainsboro;">
+					<div class="col-1">
+						
+						<div class="circle">${(j+1)}</div>
+						
+					</div>
+					<div class="col-11">
+							<h6 class="" style="margin-top:9px">
+							${task.name}
+							</h6>
+								
+								${html_institutes}
+					</div>
+				</div>
+				<div style="text-align:center;margin-top:-20px">
+					<i class="line"></i>
+				</div>
+				`
+			})
+
+		html += `
+			</div>
+			`
+
+	})
+
+	$('#main-list').html(html)
+}
 function showList(){
 
 	// clear
@@ -216,6 +281,10 @@ function showList(){
 
 	$('#main-list').html(html)
 }
+
+
+
+
 function createSidebar(){
 
 	var sidehtml = '<h3>Supporting Entities</h3>'
