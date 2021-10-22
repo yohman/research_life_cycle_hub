@@ -110,7 +110,7 @@ function showList2(){
 				})
 
 				html += `
-				<div class="row card" style="width:100%;background-color:gainsboro;">
+				<div class="row card" style="width:100%;background-color:whitesmoke;">
 					<div class="col-1">
 						
 						<div class="circle">${(j+1)}</div>
@@ -124,10 +124,15 @@ function showList2(){
 								${html_institutes}
 					</div>
 				</div>
-				<div style="text-align:center;margin-top:-20px">
-					<i class="line"></i>
-				</div>
 				`
+				console.log(`task ${j+1} of ${tasks.length}`)
+				if(j < tasks.length-1){
+					html +=`
+					<div style="text-align:center;margin-top:-20px">
+						<i class="line"></i>
+					</div>
+					`
+				}
 			})
 
 		html += `
