@@ -21,7 +21,8 @@ html {
 
 a {
     text-decoration: none;
-
+    color: #2774ae;
+    font-weight:900;
 }
 
 .dot {
@@ -92,12 +93,14 @@ h1,.h1 {
     font-size: 1.5em;
 }
 h2,.h2 {
-    border-top: 1px solid silver;
-    border-bottom: 1px solid silver;
-    /* font-family: Economica; */
-    font-size: 1.2em;
+    /* border-top: 1px solid silver; */
+    /* border-bottom: 1px solid silver; */
+    font-family: Economica;
+    font-size: 1.4em;
     padding: 5px;
-    background: #eee;}
+    background: #ccc;
+    border-radius: 4px;
+}
 
 h3 {
     /* font-family: Economica; */
@@ -118,7 +121,7 @@ h3-network {
     width: 30px;
     height: 30px;
     padding: 0px;
-    background: #555;
+    background: #999;
     padding-top: 2px;
     /* border: 3px solid #fff; */
     color: #fff;

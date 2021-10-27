@@ -66,8 +66,8 @@ function toggleContent(content)
 			$('#main-home').hide()
 			$('#main-list').hide()
 			$('#main-network').hide()
-			$('#main-institute').hide()
-			$('#main-task').show()
+			$('#main-institute').show()
+			$('#main-task').hide()
 			$('#side-content').show()
 			break;
 
@@ -93,7 +93,7 @@ function showList2(){
 		
 		*/ 
 		html += `
-			<div class="col-3">
+			<div class="col-3" >
 				<span class="text-muted" style="font-size:0.8em">Phase ${(i+1)}</span>
 				<div class="h3">
 					${phase.name}
@@ -110,7 +110,7 @@ function showList2(){
 				})
 
 				html += `
-				<div class="row card" style="width:100%;background-color:whitesmoke;">
+				<div class="row card" style="width:100%;background-color:whitesmoke;" >
 					<div class="col-1">
 						
 						<div class="circle">${(j+1)}</div>
@@ -118,7 +118,7 @@ function showList2(){
 					</div>
 					<div class="col-11">
 							<h6 class="" style="margin-top:9px">
-							${task.name}
+							<a href="#"  onclick="showTask(${task.id})">${task.name}</a>
 							</h6>
 								
 								${html_institutes}
@@ -292,17 +292,18 @@ function showList(){
 
 function createSidebar(){
 
-	var sidehtml = '<h3>Supporting Entities</h3>'
-	sidehtml += '<table class="table ">'
+	var sidehtml = '<h2>Supporting Entities</h2>'
+	sidehtml += '<table class="table table-borderless align-middle">'
 
 	// only show parents
 	var parent_institutes = rlc.data.institutes.filter(item=>item.parent_id == '')
 
 	$.each(parent_institutes,function(i,val){
 		institute = getInstituteByInstituteID(val.id)
-		sidehtml += '<tr><td>'
-		sidehtml += `<a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a></td>`
-		sidehtml += `<td style="font-size:.8em">${val.name}${rlc.icons.more_info}</td></tr>`
+		sidehtml += '<tr class="align-middle">'
+		sidehtml += `<td><div class="circle-small" style="background:${val.color}" onclick="showInstitute(${val.id})">${val.acronym}</div></td>`
+		// sidehtml += `<a href="#" class="circle-small" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:${val.color}">${val.acronym}</a></td>`
+		sidehtml += `<td style="font-size:.8em" class="align-middle"><a href="#" onclick="showInstitute(${val.id})" style="font-weight: 400;">${val.name}</a></td></tr>`
 
 	})
 	sidehtml += '</table>'
@@ -734,11 +735,13 @@ function showInstitute(id){
 	var children = rlc.data.institutes.filter(item=>item.parent_id == id)
 
 	if(children.length>0){
-		html += '<h2>Sub-units</h2>';
+		html += '<h2>Sub-units</h2>'
+		html += '<table class="table table-borderless">'
 		children.forEach(element => {
-			// html += `<span class="badge badge-primary" style="font-weight: 400;background-color:${element.color}">${element.acronym}</span>`
-			html += `<h3>${element.name}</h3><small>${element.url}</small><p>${element.description}</p>`
+			html += '<tr style="border-bottom:1px solid gainsboro;"><td>'
+			html += `<h3>${element.name}</h3><a href="${element.url}" class="text-muted" style="font-size:0.7em" target="_blank">${element.url}</a><p style="margin-left:20px">${element.description}</p></td></tr>`
 		});
+		html += '</table>'
 	}
 
 	/*
@@ -750,12 +753,12 @@ function showInstitute(id){
 
 	// table option
 	html += '<h2>Supported tasks</h2>'
-	html += '<table class="table">'
+	html += '<table class="table table-borderless">'
 	$.each(tasks,function(j,task){
 		// what phase?
 		var phase = rlc.data.phases.filter(item => item.id == task.phase_id)[0]
 		var institutes = getInstitutesByTaskID(task.id)
-		html += '<tr>'
+		html += '<tr style="border-bottom:1px solid gainsboro;">'
 		html += '<td><div class="circle-small" style="background:'+phase.color+'">'+phase.name+'</div><div class="vl" style="color:'+institute.color+'"></div></td>'
 		html += '<td><h3>'+task.name
 		html += rlc.icons.more_info+'</h3>'
@@ -780,40 +783,62 @@ function showInstitute(id){
 
 ***************************** */ 
 
-function createTask(id){
+function showTask(id){
+	console.log(id)
 	// hide other stuff
 	toggleContent('task')
 	// $('#main-network').hide()
 	// $('#main-list').hide()
-	
-	institute = getInstituteByInstituteID(id)
-	console.log(institute)
+	task = getTaskByTaskID(id)
+	phase = rlc.data.phases.filter(item => item.id == task.phase_id)[0]
+	console.log(task)
+
+	// institute = getInstituteByInstituteID(id)
+	// console.log(institute)
 	html = '';
 
-	html += `<span class="badge badge-primary" style="font-weight: 400;background-color:${institute.color}">${institute.acronym}</span><h1>${institute.name}</h1><small>${institute.url}</small><p>${institute.description}</p>`
+	html += `<span class="text-muted" style="font-size:0.8em">Phase: ${phase.name}</span>
+		<h1 class="display-6">Task: ${task.name}</h1><p>${task.description}</p>`
 
-	tasks = getTasksByInstituteID(id);
+	html += '<h2>Supporting entities</h2>'
+	html += '<table class="table table-borderless">'
 
-	// table option
-	html += '<table class="table">'
-	$.each(tasks,function(j,task){
-		// what phase?
-		var phase = rlc.data.phases.filter(item => item.id == task.phase_id)[0]
-		var institutes = getInstitutesByTaskID(task.id)
-		html += '<tr>'
-		html += '<td><div class="circle-small" style="background:'+phase.color+'">'+phase.name+'</div><div class="vl" style="color:'+institute.color+'"></div></td>'
-		html += '<td><h3>'+task.name
-		html += rlc.icons.more_info+'</h3>'
-		html += '<p>'+task.description+'</p>'
-		// html += '</td>'
-		$.each(institutes,function(k,institute){
-			thisinstitute = getInstituteByInstituteID(institute.institute_id)
-			html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
-		})
-		html += '</td>'
-		html += '</tr>'
+	var institutes = getInstitutesByTaskID(id)
+
+	html_institutes = '';
+	$.each(institutes,function(k,institute){
+		thisinstitute = getInstituteByInstituteID(institute.institute_id)
+
+		html += '<tr style="border-bottom:1px solid gainsboro;">'
+		html += '<td><div class="circle-small" style="background:'+thisinstitute.color+'">'+thisinstitute.acronym+'</div></td>'
+		html += `<td><h3>${thisinstitute.name}</h3>
+				<p>${thisinstitute.description}</p>`
+
+		// html_institutes += `<span class="badge badge-primary" style="font-weight: 400;background-color:${thisinstitute.color}">${thisinstitute.acronym}</span><span style="font-size:.8em">${thisinstitute.name}</span>`
+		// html_institutes += `<span class="dot" title="${thisinstitute.acronym}" data-toggle="tooltip" onclick="showInstitute(${institute.institute_id})" style="background-color:${thisinstitute.color}"></span> `
 	})
-	html += '</table>'
+
+		
+	// table option
+	// html += '<table class="table">'
+	// $.each(tasks,function(j,task){
+	// 	// what phase?
+	// 	var phase = rlc.data.phases.filter(item => item.id == task.phase_id)[0]
+	// 	var institutes = getInstitutesByTaskID(task.id)
+	// 	html += '<tr>'
+	// 	html += '<td><div class="circle-small" style="background:'+phase.color+'">'+phase.name+'</div><div class="vl" style="color:'+institute.color+'"></div></td>'
+	// 	html += '<td><h3>'+task.name
+	// 	html += rlc.icons.more_info+'</h3>'
+	// 	html += '<p>'+task.description+'</p>'
+	// 	// html += '</td>'
+	// 	$.each(institutes,function(k,institute){
+	// 		thisinstitute = getInstituteByInstituteID(institute.institute_id)
+	// 		html += '<a href="#" class="badge badge-primary" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
+	// 	})
+	// 	html += '</td>'
+	// 	html += '</tr>'
+	// })
+	// html += '</table>'
 
 	$('#main-institute').html(html)
 }
