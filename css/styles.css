@@ -25,13 +25,6 @@ a {
     font-weight:900;
 }
 
-.dot {
-    height: 15px;
-    width: 15px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-  }
 
 .line {
     height: 33px;
@@ -115,6 +108,15 @@ h3-network {
     font-weight: 400;
 }
 
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+
 .circle {
     margin-top: 10px;
     border-radius: 50%;
@@ -126,6 +128,8 @@ h3-network {
     /* border: 3px solid #fff; */
     color: #fff;
     text-align: center;
+    display: inline-block;
+
     /* font: 28px Economica, sans-serif; */
 }
 

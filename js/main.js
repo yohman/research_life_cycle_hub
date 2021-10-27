@@ -93,10 +93,14 @@ function showList2(){
 		
 		*/ 
 		html += `
-			<div class="col-3" >
-				<span class="text-muted" style="font-size:0.8em">Phase ${(i+1)}</span>
-				<div class="h3">
-					${phase.name}
+			<div class="col-3" style="text-align:center">
+				<div class="row card" style="width:100%;background-color:gainsboro;" >
+					<div class="col-12">
+						<span class="text-muted" style="font-size:0.8em">Phase ${(i+1)}</span>
+						<div class="h3">
+							${phase.name}
+						</div>
+					</div>
 				</div>
 			`
 
@@ -111,17 +115,14 @@ function showList2(){
 
 				html += `
 				<div class="row card" style="width:100%;background-color:whitesmoke;" >
-					<div class="col-1">
-						
-						<div class="circle">${(j+1)}</div>
-						
-					</div>
-					<div class="col-11">
+					<div class="col-12">
+							<span class="circle">${(j+1)}</span>
+
 							<h6 class="" style="margin-top:9px">
-							<a href="#"  onclick="showTask(${task.id})">${task.name}</a>
-							</h6>
-								
-								${html_institutes}
+						<a href="#"  onclick="showTask(${task.id})">${task.name}</a>
+						</h6>
+							
+						${html_institutes}
 					</div>
 				</div>
 				`
