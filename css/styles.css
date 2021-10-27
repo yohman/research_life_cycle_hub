@@ -114,6 +114,7 @@ h3-network {
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
+    cursor: pointer;
   }
 
 
@@ -138,12 +139,15 @@ h3-network {
     width: 50px;
     height: 50px;
     padding: 0px;
-    background: #fff;
+    background: #bbb;
     border: 3px solid #fff;
     color: #fff;
     text-align: center;
     font: 14px Economica, sans-serif;
     padding:14px 0;
+    display: inline-block;
+    cursor: pointer;
+
 }
 
 .vl {

@@ -119,7 +119,7 @@ function showList2(){
 							<span class="circle">${(j+1)}</span>
 
 							<h6 class="" style="margin-top:9px">
-						<a href="#"  onclick="showTask(${task.id})">${task.name}</a>
+							<a href="#"  onclick="showTask(${task.id})">${task.name}</a>
 						</h6>
 							
 						${html_institutes}
@@ -760,14 +760,13 @@ function showInstitute(id){
 		var phase = rlc.data.phases.filter(item => item.id == task.phase_id)[0]
 		var institutes = getInstitutesByTaskID(task.id)
 		html += '<tr style="border-bottom:1px solid gainsboro;">'
-		html += '<td><div class="circle-small" style="background:'+phase.color+'">'+phase.name+'</div><div class="vl" style="color:'+institute.color+'"></div></td>'
-		html += '<td><h3>'+task.name
-		html += rlc.icons.more_info+'</h3>'
+		html += '<td><div class="circle-small" >'+phase.name+'</div></td>'
+		html += `<td><h3><a href="#"  onclick="showTask(${task.id})">${task.name}</a>`
 		html += '<p>'+task.description+'</p>'
 		// html += '</td>'
 		$.each(institutes,function(k,institute){
 			thisinstitute = getInstituteByInstituteID(institute.institute_id)
-			html += `<a href="#" class="badge badge-primary" onclick="showInstitute(${thisinstitute.id})" style="font-weight: 400;background-color:${thisinstitute.color}">${thisinstitute.acronym}</a> `
+			html += `<span class="circle-small" onclick="showInstitute(${thisinstitute.id})" style="font-weight: 400;background-color:${thisinstitute.color}">${thisinstitute.acronym}</span> `
 			// html += '<a href="#" class="badge badge-primary" onclick="showInstitute(${val.id})" style="font-weight: 400;background-color:'+thisinstitute.color+'">'+thisinstitute.acronym+'</a> ' 
 		})
 		html += '</td>'
@@ -811,8 +810,8 @@ function showTask(id){
 		thisinstitute = getInstituteByInstituteID(institute.institute_id)
 
 		html += '<tr style="border-bottom:1px solid gainsboro;">'
-		html += '<td><div class="circle-small" style="background:'+thisinstitute.color+'">'+thisinstitute.acronym+'</div></td>'
-		html += `<td><h3>${thisinstitute.name}</h3>
+		html += `<td><div class="circle-small" style="background:${thisinstitute.color}" onclick="showInstitute(${institute.institute_id})">${thisinstitute.acronym}</div></td>`
+		html += `<td><h3><a href="#" onclick="showInstitute(${institute.institute_id})">${thisinstitute.name}</a></h3>
 				<p>${thisinstitute.description}</p>`
 
 		// html_institutes += `<span class="badge badge-primary" style="font-weight: 400;background-color:${thisinstitute.color}">${thisinstitute.acronym}</span><span style="font-size:.8em">${thisinstitute.name}</span>`
@@ -827,7 +826,7 @@ function showTask(id){
 	// 	var phase = rlc.data.phases.filter(item => item.id == task.phase_id)[0]
 	// 	var institutes = getInstitutesByTaskID(task.id)
 	// 	html += '<tr>'
-	// 	html += '<td><div class="circle-small" style="background:'+phase.color+'">'+phase.name+'</div><div class="vl" style="color:'+institute.color+'"></div></td>'
+	// 	html += '<td><div class="circle-small" style="background:'+phase.color+'">'+phase.name+'</div></td>'
 	// 	html += '<td><h3>'+task.name
 	// 	html += rlc.icons.more_info+'</h3>'
 	// 	html += '<p>'+task.description+'</p>'
